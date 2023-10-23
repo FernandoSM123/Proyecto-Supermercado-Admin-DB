@@ -100,7 +100,7 @@ def login():
             'user': user_data["usuario"],
             'rol': user_data["rol"],
             'exp': datetime.utcnow() + timedelta(minutes=30)
-        }, SECRET_KEY, algorithms=[ALG_KEY])
+        }, SECRET_KEY, ALG_KEY)
 
         return jsonify({'mensaje': 'Conexion con la DB exitosa', 'usuario': user_data, 'token': token}), 200
     except Exception as ex:
