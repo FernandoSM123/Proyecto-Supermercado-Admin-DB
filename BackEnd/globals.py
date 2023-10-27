@@ -1,0 +1,3 @@
+GLOBAL_VARS = {
+  "DB_CONNECTION" : None
+}
