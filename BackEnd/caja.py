@@ -12,7 +12,7 @@ def home():
 
 # GET ALL CAJAS
 @caja.route("/getAll")
-def getAllProductos():
+def getAllCajas():
     try:
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
         out_cursor = cursor.var(cx_Oracle.CURSOR)
@@ -68,13 +68,16 @@ def getCajaById(id):
 # La ruta de este metodo es /caja/updateCaja 
 # Este metodo recibe un json con dos parametros caja_id el 
 # y numero_de_caja este será el dato a actualizar
-@caja.route("/updateCaja", methods=["POST"])
+@caja.route("/update", methods=["POST"])
 def updateCaja():
     data = request.get_json()
     id = data.get('caja_id')
     numero_caja = data.get('numero_de_caja')
 
     try:
+        id = int(id)
+        numero_caja = int(numero_caja)
+
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
         cursor.callproc("SYS.ActualizarCaja",(id, numero_caja))
         cursor.execute("COMMIT")
