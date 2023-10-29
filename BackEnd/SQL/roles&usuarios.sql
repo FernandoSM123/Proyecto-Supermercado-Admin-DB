@@ -90,3 +90,20 @@ CREATE USER fabian IDENTIFIED BY fabian123
     TEMPORARY TABLESPACE temp;
 
 GRANT personal_sistemas TO fabian;
+
+
+/* Permisos de acceso segun rol */
+-- Pendiente hacer todos
+ALTER SESSION SET "_ORACLE_SCRIPT" = true;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.Productos TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getAllProductos TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getProductoByID TO personal_sistemas;
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.caja TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.BuscarCajas TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.BuscarCaja TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.ActualizarCaja TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.InsertarCaja TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.BorrarCaja TO personal_sistemas;
+

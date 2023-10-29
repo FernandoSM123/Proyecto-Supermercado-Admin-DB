@@ -56,7 +56,7 @@ END BuscarCajas;
 
 /*BUSCA UNA CAJA POR NUMERO*/
 CREATE OR REPLACE PROCEDURE BuscarCaja(
-  numero_caja_in IN NUMBER,
+  id IN NUMBER,
   cursor_out OUT SYS_REFCURSOR
 )
 IS
@@ -65,7 +65,7 @@ BEGIN
   OPEN cursor_out FOR
   SELECT caja_ID, numero_de_caja
   FROM caja
-  WHERE numero_de_caja = numero_caja_in;
+  WHERE caja_ID = id;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
     -- Maneja el caso en que no se encuentran registros para el número de caja especificado
@@ -98,6 +98,29 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Error al actualizar la caja.');
 END ActualizarCaja;
 /
+
+CREATE OR REPLACE PROCEDURE BorrarCaja(
+  caja_ID_in NUMBER
+)
+IS
+BEGIN
+  -- Intentamos borrar el registro con el caja_ID especificado
+  DELETE FROM caja
+  WHERE caja_ID = caja_ID_in;
+
+  IF SQL%ROWCOUNT = 1 THEN
+    DBMS_OUTPUT.PUT_LINE('Borrado exitoso');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('No se pudo borrar la caja');
+  END IF;
+
+  COMMIT; -- Confirma la transacción
+EXCEPTION
+  WHEN OTHERS THEN
+    -- Maneja errores que puedan ocurrir durante la eliminación
+    DBMS_OUTPUT.PUT_LINE('Error al borrar la caja.');
+END BorrarCaja;
+
 
 /*
 ----------- DATOS PARA PRUEBAS ------------
