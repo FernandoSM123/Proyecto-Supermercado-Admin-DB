@@ -94,6 +94,11 @@ def updatePfresco():
     except Exception as ex:
         return jsonify({'mensaje': 'Error al actualizar el producto fresco por Id', 'error': str(ex)})
 
+# INSERT PFRESCO
+# La ruta para este metodo es /pfresco/insert 
+# Este metodo recibe un json con estos parametros: 
+# plu, descripcion, peso y precio  
+# Ejemplo: http://127.0.0.1:5000/pfresco/insert
 @pfresco.route("/insert", methods=["POST"])
 def insertPfresco():
     data = request.get_json()
@@ -113,11 +118,14 @@ def insertPfresco():
     except Exception as ex:
         return jsonify({'mensaje': 'Error al insertar el producto fresco', 'error': str(ex)})
 
-
+# DELETE pfresco BY ID 
+# La ruta para este metodo es /pfresco/delete 
+# Este metodo recibe un json con un parametro pfresco_id  
+# Ejemplo: http://127.0.0.1:5000/pfresco/delete
 @pfresco.route("/delete", methods=["POST"])
 def deletePfresco():
     data = request.get_json()
-    pfresco_Id = data.get('pfresco_Id')
+    pfresco_Id = data.get('pfresco_id')
 
     try:
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
