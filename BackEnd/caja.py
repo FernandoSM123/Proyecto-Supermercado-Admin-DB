@@ -11,6 +11,8 @@ def home():
     return "caja home"
 
 # GET ALL CAJAS
+# Este método no requiere ningún parametro
+# La ruta para consultar es /caja/getAll
 @caja.route("/getAll")
 def getAllCajas():
     try:
@@ -65,7 +67,7 @@ def getCajaById(id):
     
 
 # UPDATE CAJA BY ID
-# La ruta de este metodo es /caja/updateCaja 
+# La ruta de este metodo es /caja/update
 # Este metodo recibe un json con dos parametros caja_id el 
 # y numero_de_caja este será el dato a actualizar
 @caja.route("/update", methods=["POST"])

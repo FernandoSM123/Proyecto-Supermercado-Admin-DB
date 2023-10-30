@@ -1,5 +1,4 @@
 /*
-----CREACION DE TABLAS Y SUS PROCEDIMIENTOS
 SE CREA UNA SECUENCIA PARA EL AUTO INCREMENTABLE DEL ID DE CAJA
 */
 CREATE SEQUENCE caja_id_sequence
@@ -122,9 +121,7 @@ EXCEPTION
 END BorrarCaja;
 
 
-/*
------------ DATOS PARA PRUEBAS ------------
-*/
+/* ----------- DATOS PARA PRUEBAS ------------ */
 
 -- -- Llamamos al procedimiento para insertar 4 cajas con diferentes números de caja
 -- BEGIN

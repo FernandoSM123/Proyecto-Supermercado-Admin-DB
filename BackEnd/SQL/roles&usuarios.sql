@@ -107,3 +107,9 @@ GRANT EXECUTE, DEBUG ON SYS.ActualizarCaja TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.InsertarCaja TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.BorrarCaja TO personal_sistemas;
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.pfresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getAllPfrescos TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoById TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.updatePfresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.InsertPfresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.deletePfresco TO personal_sistemas;
