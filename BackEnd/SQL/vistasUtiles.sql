@@ -7,3 +7,6 @@ FROM all_procedures
 WHERE object_name = 'BUSCARDATOSUSUARIO';
 
 DROP USER alberto CASCADE;
+
+select * from productos;
+delete from productos;

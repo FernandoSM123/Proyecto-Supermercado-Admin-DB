@@ -138,32 +138,32 @@ END deletePfresco;
 
 /* ----------- DATOS PARA PRUEBAS ------------ */
 
--- Llamamos al procedimiento para insertar 4 productos frescos con diferentes datos
--- BEGIN
---   InsertPfresco(1, 'Piña Hawaiana', 500, 2.99);  -- Inserta un producto fresco
---   InsertPfresco(2, 'Manzana Roja', 300, 1.99);    -- Inserta otro producto fresco
---   InsertPfresco(3, 'Fresa Fresca', 250, 3.49);    -- Inserta otro producto fresco
---   InsertPfresco(4, 'Plátano Maduro', 400, 0.99);   -- Inserta otro producto fresco
---   InsertPfresco(5, 'Uva Dulce', 600, 4.29);       -- Inserta otro producto fresco
--- END;
--- /
+--Llamamos al procedimiento para insertar 4 productos frescos con diferentes datos
+BEGIN
+  InsertPfresco(1, 'Piña Hawaiana', 500, 2.99);  -- Inserta un producto fresco
+  InsertPfresco(2, 'Manzana Roja', 300, 1.99);    -- Inserta otro producto fresco
+  InsertPfresco(3, 'Fresa Fresca', 250, 3.49);    -- Inserta otro producto fresco
+  InsertPfresco(4, 'Plátano Maduro', 400, 0.99);   -- Inserta otro producto fresco
+  InsertPfresco(5, 'Uva Dulce', 600, 4.29);       -- Inserta otro producto fresco
+END;
+/
 
--- Creamos un cursor y enlistamos todos los productos frescos
--- VAR mi_cursor REFCURSOR;
--- EXEC getAllPfrescos(:mi_cursor);
--- PRINT mi_cursor;
+--Creamos un cursor y enlistamos todos los productos frescos
+VAR mi_cursor REFCURSOR;
+EXEC getAllPfrescos(:mi_cursor);
+PRINT mi_cursor;
 
--- Buscamos un producto fresco por su Pfresco_Id
--- EXEC getPfrescoById(2, :mi_cursor);
--- PRINT mi_cursor;
+--Buscamos un producto fresco por su Pfresco_Id
+EXEC getPfrescoById(2, :mi_cursor);
+PRINT mi_cursor;
 
--- Se actualizan los datos de un producto fresco
--- BEGIN
---   updatePfresco(1, 12345, 'Piña Dulce', 300, 6.99);  -- Actualiza un producto fresco
--- END;
--- /
+--Se actualizan los datos de un producto fresco
+BEGIN
+  updatePfresco(1, 12345, 'Piña Dulce', 300, 6.99);  -- Actualiza un producto fresco
+END;
+/
 
--- Intentamos borrar un producto fresco
--- BEGIN
---   deletePfresco(5); -- Intenta borrar un producto fresco con Pfresco_Id 8
--- END;
+--Intentamos borrar un producto fresco
+BEGIN
+  deletePfresco(5); -- Intenta borrar un producto fresco con Pfresco_Id 8
+END;

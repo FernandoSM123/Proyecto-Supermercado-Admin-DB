@@ -17,8 +17,8 @@ END BuscarDatosUsuario;
 ----------- DATOS PARA PRUEBAS ------------
 */
 
--- SET SERVEROUTPUT ON;
+SET SERVEROUTPUT ON;
 
--- VAR mi_cursor REFCURSOR;
--- EXEC BuscarDatosUsuario('ALBERTO', :mi_cursor);
--- PRINT mi_cursor;
+VAR mi_cursor REFCURSOR;
+EXEC BuscarDatosUsuario('ALBERTO', :mi_cursor);
+PRINT mi_cursor;

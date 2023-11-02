@@ -5,7 +5,7 @@ CREATE SEQUENCE producto_id_sequence
   NOCACHE
   NOCYCLE;
 
---TABLA PARA ALMACENAR PRODUCTOS
+--#1 TABLA PARA ALMACENAR PRODUCTOS
 CREATE TABLE Productos (
     Producto_ID NUMBER PRIMARY KEY,
     EAN NUMBER(13,0),
@@ -14,7 +14,7 @@ CREATE TABLE Productos (
     Cantidad NUMBER
 ) TABLESPACE tables_data;
 
---INSERTAR PRODUCTO
+--#2 INSERTAR PRODUCTO
 CREATE OR REPLACE PROCEDURE insertProducto (
     p_EAN IN NUMBER,
     p_Descripcion IN VARCHAR2,
@@ -30,7 +30,7 @@ BEGIN
 END insertProducto;
 /
 
---GET PRODUCTO BY ID
+--#3 GET PRODUCTO BY ID
 CREATE OR REPLACE PROCEDURE getProductoByID (
     p_Producto_ID IN NUMBER,
     p_Producto OUT SYS_REFCURSOR
@@ -42,7 +42,7 @@ BEGIN
 END getProductoByID;
 /
 
---GET ALL PRODUCTOS
+--#4 GET ALL PRODUCTOS
 CREATE OR REPLACE PROCEDURE getAllProductos (
     p_Productos OUT SYS_REFCURSOR
 )
@@ -53,7 +53,7 @@ BEGIN
 END getAllProductos;
 /
 
---UPDATE PRODUCTO BY ID
+--#5 UPDATE PRODUCTO BY ID
 CREATE OR REPLACE PROCEDURE updateProducto (
     p_Producto_ID IN NUMBER,
     p_EAN IN NUMBER,
@@ -69,7 +69,7 @@ BEGIN
 END UpdateProducto;
 /
 
---DELETE PRODUCTOR BY ID
+--#6 DELETE PRODUCTOR BY ID
 CREATE OR REPLACE PROCEDURE deleteProducto (
     p_Producto_ID IN NUMBER
 )
@@ -79,44 +79,98 @@ BEGIN
 END DeleteProducto;
 /
 
+--#7 CONSULTAR PRECIO PRODUCTO POR EAN
+CREATE OR REPLACE PROCEDURE precioProducto (
+    p_EAN NUMBER,
+    p_Cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_Cursor FOR
+    SELECT Descripcion, Precio
+    FROM Productos
+    WHERE EAN = p_EAN;
+END precioProducto;
+/
+
+--#8 CONSULTAR PRODUCTOS POR EAN
+CREATE OR REPLACE PROCEDURE getProductosPorCodigo (
+    p_EAN NUMBER,
+    p_Productos OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_Productos FOR
+    SELECT * FROM Productos
+    WHERE EAN = p_EAN;
+END getProductosPorCodigo;
+/
+
+--#9 CONSULTAR PRODUCTOS POR DESCRIPCION
+CREATE OR REPLACE PROCEDURE getProductosPorDescripcion (
+    p_Descripcion IN VARCHAR2,
+    p_Productos OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_Productos FOR
+    SELECT * FROM Productos
+    WHERE LOWER(Descripcion) LIKE '%' || LOWER(p_Descripcion) || '%';
+END getProductosPorDescripcion;
+/
+
 /*
 ----------- DATOS PARA PRUEBAS ------------
 */
 
-----DATOS DE PRUEBA
---BEGIN
---  InsertProducto(1808124003091, 'Lid - 0090 Clear', 9579.83, 99);  
---  InsertProducto(4370783586295, 'Muffin Carrot - Individual', 9252.61, 56);  
---  InsertProducto(5105235176997, 'Beets', 8220.79, 76);  
---  InsertProducto(3934608083093, 'Dc - Sakura Fu', 7342.32, 93);  
---  InsertProducto(2708092159052, 'Spic And Span All Purpose', 8121.94, 99);  
---  InsertProducto(5778929407214, 'Hand Towel', 6050.67, 60);  
---  InsertProducto(3484270445743, 'Salt - Seasoned', 7026.46, 70);  
---  InsertProducto(6276827953045, 'Lamb - Sausage Casings', 7641.73, 53);  
---  InsertProducto(9045603140164, 'Pepper - Roasted Red', 2878.86, 87);  
---  InsertProducto(6975935603398, 'Chinese Foods - Plain Fried Rice', 2974.55, 93);  
---END;
---/
---
-----GET PRODUCTO PRUEBA
---VAR mi_cursor REFCURSOR;
---EXEC getProductoByID(1,:mi_cursor);
---PRINT mi_cursor;
---
-----GET ALL PRODUCTOS PRUEBA
---VAR mi_cursor REFCURSOR;
---EXEC getAllProductos(:mi_cursor);
---PRINT mi_cursor;
---
-----UPDATE PRODUCTO PRUEBA
---BEGIN
---  updateProducto(10,6975935603398, 'COMIDA CHINA', 2974.55, 93);
---END;
---/
---
-----DELETE PRODUCTO PRUEBA
---BEGIN
---  deleteProducto(10);
---END;
---/
+BEGIN
+  InsertProducto(1808124003091, 'Lid - 0090 Clear', 9579.83, 99);  
+  InsertProducto(4370783586295, 'Muffin Carrot - Individual', 9252.61, 56);  
+  InsertProducto(5105235176997, 'Beets', 8220.79, 76);  
+  InsertProducto(3934608083093, 'Dc - Sakura Fu', 7342.32, 93);  
+  InsertProducto(2708092159052, 'Spic And Span All Purpose', 8121.94, 99);  
+  InsertProducto(5778929407214, 'Hand Towel', 6050.67, 60);  
+  InsertProducto(3484270445743, 'Salt - Seasoned', 7026.46, 70);  
+  InsertProducto(6276827953045, 'Lamb - Sausage Casings', 7641.73, 53);  
+  InsertProducto(9045603140164, 'Pepper - Roasted Red', 2878.86, 87);  
+  InsertProducto(6975935603398, 'Chinese Foods - Plain Fried Rice', 2974.55, 93);
+  InsertProducto(9975935603398, 'Maruchan', 500.00, 66); 
+END;
+/
+
+--GET PRODUCTO PRUEBA
+VAR mi_cursor REFCURSOR;
+EXEC getProductoByID(1,:mi_cursor);
+PRINT mi_cursor;
+
+--GET ALL PRODUCTOS PRUEBA
+VAR mi_cursor REFCURSOR;
+EXEC getAllProductos(:mi_cursor);
+PRINT mi_cursor;
+
+--UPDATE PRODUCTO PRUEBA
+BEGIN
+  updateProducto(10,6975935603398, 'COMIDA CHINA', 2974.55, 93);
+END;
+/
+
+--DELETE PRODUCTO PRUEBA
+BEGIN
+  deleteProducto(10);
+END;
+/
+
+--GET PRECIO PRODUCTO
+VAR mi_cursor REFCURSOR;
+EXEC precioProducto(5778929407214,:mi_cursor);
+PRINT mi_cursor;
+
+--GET PRODUCTOS POR EAN
+VAR mi_cursor REFCURSOR;
+EXEC getProductosPorCodigo(5778929407214,:mi_cursor);
+PRINT mi_cursor;
+
+--GET PRODUCTOS POR DESCRIPCION
+VAR mi_cursor REFCURSOR;
+EXEC getProductosPorDescripcion('m',:mi_cursor);
+PRINT mi_cursor;
 
