@@ -70,7 +70,7 @@ def getCajaById(id):
 # La ruta de este metodo es /caja/update
 # Este metodo recibe un json con dos parametros caja_id el 
 # y numero_de_caja este será el dato a actualizar
-@caja.route("/update", methods=["POST"])
+@caja.route("/update", methods=["PUT"])
 def updateCaja():
     data = request.get_json()
     id = data.get('caja_id')
@@ -118,11 +118,9 @@ def insertCaja():
 # DELETE CAJA BY ID 
 # La ruta para este metodo es /caja/delete 
 # Este metodo recibe un json con un parametro caja_id  
-# Ejemplo: http://127.0.0.1:5000/caja/delete
-@caja.route("/delete", methods=["POST"])
-def deleteCaja():
-    data = request.get_json()
-    id = data.get('caja_id')
+# Ejemplo: http://127.0.0.1:5000/caja/delete/id
+@caja.route("/delete/<id>", methods=["DELETE"])
+def deleteCaja(id):
 
     try:
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()

@@ -51,8 +51,13 @@ CREATE USER dylan IDENTIFIED BY dylan123
     DEFAULT TABLESPACE users_data
     TEMPORARY TABLESPACE temp;
 
+CREATE USER karen IDENTIFIED BY karen123
+    DEFAULT TABLESPACE users_data
+    TEMPORARY TABLESPACE temp;
+
 -- ASIGNACION DE ROL PARA LOS USUARIOS
 GRANT gerente_area TO dylan;
+GRANT gerente_area TO karen;
 
 --USUARIOS GERENTE GENERAL
 CREATE USER emilio IDENTIFIED BY emilio123
@@ -77,6 +82,12 @@ ALTER SESSION SET "_ORACLE_SCRIPT" = true;
 GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.Productos TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getAllProductos TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getProductoByID TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.updateProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.insertProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.deleteProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.precioProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getProductosPorCodigo TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getProductosPorDescripcion TO personal_sistemas;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.caja TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.BuscarCajas TO personal_sistemas;
@@ -91,10 +102,14 @@ GRANT EXECUTE, DEBUG ON SYS.getPfrescoById TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.updatePfresco TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.InsertPfresco TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.deletePfresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorPLU TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorDescripcion TO personal_sistemas;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON factura TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON getAllFactura TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON getFacturaById TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON insertFactura TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON updateFactura TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON deleteFactura TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON getAllFactura TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON getFacturaById TO personal_sistemas;
+

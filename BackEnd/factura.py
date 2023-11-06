@@ -81,7 +81,7 @@ def getFacturaById(id):
 # Este metodo recibe un json con estos parametros: 
 # factura_id, numero_factura, monto_total, fecha, hora, cajero_id y caja_id
 # factura_id es el unico dato que no se actualiza.
-@factura.route("/update", methods=["POST"])
+@factura.route("/update", methods=["PUT"])
 def updateFactura():
     data = request.get_json()
     factura_Id = data.get('factura_id')
@@ -130,15 +130,13 @@ def insertFactura():
 # DELETE FACTURA BY ID 
 # La ruta para este metodo es /factura/delete 
 # Este metodo recibe un json con un parametro factura_id  
-# Ejemplo: http://127.0.0.1:5000/factura/delete
-@factura.route("/delete", methods=["POST"])
-def deletePfresco():
-    data = request.get_json()
-    factura_Id = data.get('factura_id')
+# Ejemplo: http://127.0.0.1:5000/factura/delete/id
+@factura.route("/delete/<id>", methods=["DELETE"])
+def deletePfresco(id):
 
     try:
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
-        cursor.callproc("SYS.deleteFactura", (factura_Id,))
+        cursor.callproc("SYS.deleteFactura", (id,))
         cursor.execute("COMMIT")
         
         return jsonify({'mensaje': 'Factura eliminado'}), 200

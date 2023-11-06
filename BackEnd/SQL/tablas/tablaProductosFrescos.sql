@@ -140,6 +140,47 @@ EXCEPTION
 END deletePfresco;
 /
 
+/* PROCEDIMIENTO PARA BUSCAR EL PRECIO POR PLU */
+CREATE OR REPLACE PROCEDURE precioPfresco (
+    p_PLU NUMBER,
+    p_Cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_Cursor FOR
+    SELECT descripcion, precio
+    FROM pfresco
+    WHERE PLU = p_PLU;
+END precioPfresco;
+/
+
+/* PROCEDIMIENTO PARA BUSCAR TODA LA INFORMACION DE PFRESCO POR PLU */
+CREATE OR REPLACE PROCEDURE getPfrescoPorPLU (
+    p_PLU NUMBER,
+    p_Cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_Cursor FOR
+    SELECT Pfresco_Id, PLU, descripcion, peso, Precio
+    FROM pfresco
+    WHERE PLU = p_PLU;
+END getPfrescoPorPLU;
+/
+
+/* PROCEDIMIENTO PARA BUSCAR TODA LA INFORMACION DE PFRESCO POR DESCRIPCIÓN */
+CREATE OR REPLACE PROCEDURE getPfrescoPorDescripcion (
+    p_Descripcion IN VARCHAR2,
+    p_Pfrescos OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_Pfrescos FOR
+    SELECT Pfresco_Id, PLU, descripcion, peso, Precio 
+    FROM pfresco
+    WHERE LOWER(descripcion) LIKE '%' || LOWER(p_Descripcion) || '%';
+END getPfrescoPorDescripcion;
+/
+
 -------------------------------------------------------------------------------------------------
 ---------------------------------- DATOS PARA PRUEBAS -------------------------------------------
 
@@ -169,8 +210,19 @@ BEGIN
 END;
 /
 
---Intentamos borrar un producto fresco
+--Borrarmos un producto fresco
 BEGIN
   deletePfresco(5); -- Intenta borrar un producto fresco con Pfresco_Id 8
 END;
 
+--Consultamos un el precio de un pfresco por PLU
+EXEC precioPfresco(12345, :mi_cursor);
+PRINT mi_cursor;
+
+--Consultamos un pfresco por PLU
+EXEC getPfrescoPorPLU(56789, :mi_cursor);
+PRINT mi_cursor;
+
+--Consultamos un pfresco por descripcion
+EXEC getPfrescoPorDescripcion('p', :mi_cursor);
+PRINT mi_cursor;
