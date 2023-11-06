@@ -14,6 +14,11 @@ CREATE TABLE pfresco (
   Precio NUMBER
 ) TABLESPACE tables_data;
 
+
+-------------------------------------------------------------------------------------------------
+----------------------------- PROCEDIMIENTOS ALMACENADOS ----------------------------------------
+
+
 /* PROCEDIMIENTO PARA INSERTAR UN PRODUCTO FRESCO */
 CREATE OR REPLACE PROCEDURE InsertPfresco(
   PLU_in NUMBER,
@@ -111,7 +116,7 @@ EXCEPTION
 END updatePfresco;
 /
 
-/* PROCEDIMIENTO PARA DELIMINAR UN PRODUCTO FRESCO */
+/* PROCEDIMIENTO PARA ELIMINAR UN PRODUCTO FRESCO */
 CREATE OR REPLACE PROCEDURE deletePfresco(
   Pfresco_Id_in NUMBER
 )
@@ -135,8 +140,9 @@ EXCEPTION
 END deletePfresco;
 /
 
+-------------------------------------------------------------------------------------------------
+---------------------------------- DATOS PARA PRUEBAS -------------------------------------------
 
-/* ----------- DATOS PARA PRUEBAS ------------ */
 
 --Llamamos al procedimiento para insertar 4 productos frescos con diferentes datos
 BEGIN
@@ -167,3 +173,4 @@ END;
 BEGIN
   deletePfresco(5); -- Intenta borrar un producto fresco con Pfresco_Id 8
 END;
+
