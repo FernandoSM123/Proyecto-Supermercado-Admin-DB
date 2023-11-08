@@ -64,16 +64,26 @@ CREATE USER emilio IDENTIFIED BY emilio123
     DEFAULT TABLESPACE users_data
     TEMPORARY TABLESPACE temp;
 
+CREATE USER mariana IDENTIFIED BY mariana123
+    DEFAULT TABLESPACE users_data
+    TEMPORARY TABLESPACE temp;
+
 -- ASIGNACION DE ROL PARA EL USUARIO
 GRANT gerente_general TO emilio;
+GRANT gerente_general TO mariana;
 
 -- USUARIOS PERSONAL SISTEMAS
 CREATE USER fabian IDENTIFIED BY fabian123
     DEFAULT TABLESPACE users_data
     TEMPORARY TABLESPACE temp;
 
+CREATE USER roberto IDENTIFIED BY roberto123
+    DEFAULT TABLESPACE users_data
+    TEMPORARY TABLESPACE temp;
+
 -- ASIGNACION DE ROL PARA LOS USUARIOS
 GRANT personal_sistemas TO fabian;
+GRANT personal_sistemas TO roberto;
 
 ------------------------- Asignacion de permisos de acceso segun rol ----------------------------
 -- Pendiente hacer todos
