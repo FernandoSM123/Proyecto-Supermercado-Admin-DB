@@ -1,0 +1,30 @@
+ROLES
+
+1. **Cajero (3)**:
+   - Puede realizar ventas. 
+   - Puede consultar precios de productos. 
+   - No puede realizar modificaciones en la base de datos.
+   - Debe registrar información de ventas en una tabla de facturas, incluyendo el número de factura, artículo (código), cantidad, subtotal, total, cajero, caja, fecha y hora.
+   - Se almacena en la tabla de auditoría la información de la venta, incluyendo el usuario, número de caja, número de factura, monto total de la factura, fecha de la venta y hora de la venta.
+
+2. **Gerente de Área (4)**:
+   - Puede autorizar y aplicar modificaciones en los productos del área que tiene bajo su cargo.
+   - Puede consultar información de productos en su área y de otras áreas.
+   - Puede realizar consultas por código o descripción.
+   - No puede insertar nuevos productos ni eliminar productos.
+   - Debe registrar todas las operaciones que realice, incluyendo hora, día, tipo de transacción, tabla y el usuario que realiza la operación.
+   - Puede modificar descripción y cantidad de productos en su área. -> ESTO NO ESTA sE TIENE QUE IMPLEMENTAR
+   
+3. **Gerente General (2)**:
+   - Puede insertar nuevos productos.
+   - Puede modificar productos.
+   - Puede consultar información de productos en todas las áreas.
+   - Puede borrar productos descontinuados.
+   - Debe registrar todas las operaciones que realice, incluyendo hora, día, tipo de transacción, tabla y el usuario que realiza la operación.
+   
+4. **Personal de Sistemas (2)**:
+   - Puede realizar cualquier tipo de movimiento a nivel de productos.
+   - Puede ejecutar procesos a nivel de PV, como ejecución de procesos en caso de fallos, respaldos de información y restauración de la base de datos.
+   - Puede monitorear las bitácoras, pero solo visualizarlas.
+   - Puede realizar movimientos en las tablas maestras (select, insert, update, delete) con previa autorización de la gerencia general.
+   - Debe registrar todas las operaciones que realice, incluyendo hora, día, tipo de transacción, tabla y el usuario que realiza la operación.
