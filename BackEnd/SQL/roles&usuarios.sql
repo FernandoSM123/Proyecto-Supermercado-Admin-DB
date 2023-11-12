@@ -26,6 +26,53 @@ CREATE ROLE gerente_general;
 --ROL PERSONAL SISTEMAS
 CREATE ROLE personal_sistemas;
 
+---------------------------------- Creacion de perfiles  ----------------------------------------
+
+-- Perfil para el rol CAJERO
+CREATE PROFILE perfil_cajero LIMIT
+  SESSIONS_PER_USER 1
+  CPU_PER_SESSION 300000
+  CPU_PER_CALL 300000
+  CONNECT_TIME 240
+  IDLE_TIME 1;
+
+-- Perfil para el rol GERENTE AREA
+CREATE PROFILE perfil_gerente_area LIMIT
+  SESSIONS_PER_USER 2
+  CPU_PER_SESSION 20000
+  CPU_PER_CALL 20000
+  CONNECT_TIME 240
+  IDLE_TIME 5;
+
+-- Perfil para el rol GERENTE GENERAL 
+CREATE PROFILE perfil_gerente_general LIMIT
+  SESSIONS_PER_USER 3
+  CPU_PER_SESSION UNLIMITED
+  CPU_PER_CALL UNLIMITED
+  CONNECT_TIME UNLIMITED
+  IDLE_TIME UNLIMITED;
+
+
+-- Perfil para el rol PERSONAL SISTEMAS 
+CREATE PROFILE perfil_personal_sistemas LIMIT
+  SESSIONS_PER_USER 3
+  CPU_PER_SESSION UNLIMITED
+  CPU_PER_CALL UNLIMITED
+  CONNECT_TIME UNLIMITED
+  IDLE_TIME UNLIMITED;
+
+-- Asignar el perfil CAJERO al rol CAJERO
+ALTER USER cajero PROFILE perfil_cajero;
+
+-- Asignar el perfil GERENTE AREA al rol GERENTE AREA
+ALTER USER gerente_area PROFILE perfil_gerente_area;
+
+-- Asignar el perfil GERENTE GENERAL al rol GERENTE GENERAL
+ALTER USER gerente_general PROFILE perfil_gerente_general;
+
+-- Asignar el perfil PERSONAL SISTEMAS al rol PERSONAL SISTEMAS
+ALTER USER personal_sistemas PROFILE perfil_personal_sistemas;
+
 ---------------------------------- Creacion de usuarios -----------------------------------------
 
 --USUARIOS CAJERO
