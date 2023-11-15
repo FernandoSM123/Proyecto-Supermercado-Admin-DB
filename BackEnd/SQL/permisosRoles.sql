@@ -64,7 +64,7 @@ GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorPLU TO gerente_general;
 GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorDescripcion TO gerente_general;
 
 /* PERMISOS PERSONAL SISTEMAS */
-
+GRANT ALL PRIVILEGES TO personal_sistemas;
 GRANT connect TO personal_sistemas;
 GRANT SELECT ON dba_role_privs TO personal_sistemas;
 GRANT SELECT ON dba_users TO personal_sistemas;

@@ -32,7 +32,7 @@ EXCEPTION
     -- Maneja errores que puedan ocurrir durante la inserción
     DBMS_OUTPUT.PUT_LINE('Error al insertar un nuevo valor en la tabla "caja".');
 END InsertarCaja;
-
+/
 
 /*ENLISTA TODAS LAS CAJAS CREADAS*/
 CREATE OR REPLACE PROCEDURE BuscarCajas(
@@ -52,6 +52,7 @@ EXCEPTION
     -- Maneja otros errores que puedan ocurrir durante la consulta
     DBMS_OUTPUT.PUT_LINE('Se produjo un error al consultar la tabla "caja".');
 END BuscarCajas;
+/
 
 /*BUSCA UNA CAJA POR NUMERO*/
 CREATE OR REPLACE PROCEDURE BuscarCaja(
@@ -73,7 +74,7 @@ EXCEPTION
     -- Maneja otros errores que puedan ocurrir durante la consulta
     DBMS_OUTPUT.PUT_LINE('Se produjo un error al consultar las cajas por número de caja.');
 END BuscarCaja;
-
+/
 
 /*ACTUALIZA EL NUMERO DE CAJA SEGÚN EL ID DE LA CAJA*/
 CREATE OR REPLACE PROCEDURE ActualizarCaja(
@@ -119,7 +120,7 @@ EXCEPTION
     -- Maneja errores que puedan ocurrir durante la eliminación
     DBMS_OUTPUT.PUT_LINE('Error al borrar la caja.');
 END BorrarCaja;
-
+/
 
 /* ----------- DATOS PARA PRUEBAS ------------ */
 
