@@ -62,16 +62,23 @@ CREATE PROFILE perfil_personal_sistemas LIMIT
   IDLE_TIME UNLIMITED;
 
 -- Asignar el perfil CAJERO al rol CAJERO
-ALTER USER cajero PROFILE perfil_cajero;
+ALTER USER alberto PROFILE perfil_cajero;
+ALTER USER beto PROFILE perfil_cajero;
+ALTER USER camilo PROFILE perfil_cajero;
 
 -- Asignar el perfil GERENTE AREA al rol GERENTE AREA
-ALTER USER gerente_area PROFILE perfil_gerente_area;
+ALTER USER dylan PROFILE perfil_gerente_area;
+ALTER USER karen PROFILE perfil_gerente_area;
+ALTER USER tatiana PROFILE perfil_gerente_area;
+ALTER USER michael PROFILE perfil_gerente_area;
 
 -- Asignar el perfil GERENTE GENERAL al rol GERENTE GENERAL
-ALTER USER gerente_general PROFILE perfil_gerente_general;
+ALTER USER emilio PROFILE perfil_gerente_general;
+ALTER USER mariana PROFILE perfil_gerente_general;
 
 -- Asignar el perfil PERSONAL SISTEMAS al rol PERSONAL SISTEMAS
-ALTER USER personal_sistemas PROFILE perfil_personal_sistemas;
+ALTER USER fabian PROFILE perfil_personal_sistemas;
+ALTER USER roberto PROFILE perfil_personal_sistemas;
 
 ---------------------------------- Creacion de usuarios -----------------------------------------
 
@@ -102,9 +109,19 @@ CREATE USER karen IDENTIFIED BY karen123
     DEFAULT TABLESPACE users_data
     TEMPORARY TABLESPACE temp;
 
+CREATE USER tatiana IDENTIFIED BY tatiana123
+    DEFAULT TABLESPACE users_data
+    TEMPORARY TABLESPACE temp;
+
+CREATE USER michael IDENTIFIED BY michael123
+    DEFAULT TABLESPACE users_data
+    TEMPORARY TABLESPACE temp;
+
 -- ASIGNACION DE ROL PARA LOS USUARIOS
 GRANT gerente_area TO dylan;
 GRANT gerente_area TO karen;
+GRANT gerente_area TO tatiana;
+GRANT gerente_area TO michael;
 
 --USUARIOS GERENTE GENERAL
 CREATE USER emilio IDENTIFIED BY emilio123
