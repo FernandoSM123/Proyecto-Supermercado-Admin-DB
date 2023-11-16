@@ -15,6 +15,7 @@ select * from DetalleFacturaProducto;
 
 --DELETE DATOS TABLAS
 delete from productos;
+delete from factura;
 delete from DetalleFacturaProducto;
 
 --DELETE TABLAS
@@ -25,3 +26,4 @@ DROP USER alberto CASCADE;
 
 --DROP SEQUENCES
 DROP SEQUENCE detalleFacturaProducto_seq;
+DROP SEQUENCE factura_id_sequence;

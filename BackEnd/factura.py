@@ -23,9 +23,14 @@ def getAllFacturas():
         cursor.callproc("SYS.getAllFactura",(out_cursor,))
         result = out_cursor.getvalue()
         facturas = []
+        facturaID = 0
         print(result)
 
         for row in result:
+            facturaID = row[0]
+            productos = getProductosFactura(facturaID) #obtener productos factura
+            productosFrescos = getProductosFrescosFactura(facturaID) #obtener productos frescos factura
+            
             factura = {
             "factura_id" : row[0],
             "numero_factura" : row[1],
@@ -33,13 +38,17 @@ def getAllFacturas():
             "fecha" : row[3].strftime('%Y-%m-%d'),   #Le damos formato a la fecha
             "hora" : row[4].strftime('%I:%M:%S %p'), #Le damos formato a la hora
             "cajero_id" : row[5],
-            "caja_id" : row[6]
+            "caja_id" : row[6],
+            "productos": productos,
+            "productosFrescos": productosFrescos
             }
             facturas.append(factura)
+        
 
         #cursor.close()
 
-        return jsonify({'mensaje': 'Todas las facturas recuperadas', 'facturas': facturas}), 200
+        return jsonify({'mensaje': 'Todas las facturas recuperadas', 
+                        'facturas': facturas}), 200
     except Exception as ex:
         return jsonify({'mensaje': 'Error al recuperar todas las facturas', 'error': str(ex)})
 
@@ -56,9 +65,13 @@ def getFacturaById(id):
         cursor.callproc("SYS.getFacturaById",(id,out_cursor,))
         result = out_cursor.getvalue()
         facturas = []
+        facturaID = 0
         print(result)
 
         for row in result:
+            facturaID = row[0]
+            productos = getProductosFactura(facturaID) #obtener productos factura
+            productosFrescos = getProductosFrescosFactura(facturaID) #obtener productos frescos factura
             factura = {
                 "factura_id" : row[0],
                 "numero_factura" : row[1],
@@ -66,7 +79,9 @@ def getFacturaById(id):
                 "fecha" : row[3].strftime('%Y-%m-%d'),   #Le damos formato a la fecha
                 "hora" : row[4].strftime('%I:%M:%S %p'), #Le damos formato a la hora
                 "cajero_id" : row[5],
-                "caja_id" : row[6]
+                "caja_id" : row[6],
+                "productos": productos,
+                "productosFrescos": productosFrescos
             }
             facturas.append(factura)
 
@@ -142,3 +157,44 @@ def deletePfresco(id):
         return jsonify({'mensaje': 'Factura eliminado'}), 200
     except Exception as ex:
         return jsonify({'mensaje': 'Error al eliminar la factura', 'error': str(ex)})
+    
+
+#OBTENER PRODUCTOS ASOCIADOS A UNA FACTURA
+def getProductosFactura(id_factura):
+    cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+    out_cursor = cursor.var(cx_Oracle.CURSOR)
+
+    cursor.callproc("SYS.get_DetalleFacturaProducto",(id_factura,out_cursor,))
+    result = out_cursor.getvalue()
+    productos = []
+
+    for row in result:
+            producto = {
+                "EAN" : row[0],
+                "descripcion" : row[1],
+                "precio" : row[2],
+                "cantidad_comprada" : row[3],
+                "subtotal" : row[4]
+            }
+            productos.append(producto)
+    return productos
+
+#OBTENER PRODUCTOS FRESCOS ASOCIADOS A UNA FACTURA
+def getProductosFrescosFactura(id_factura):
+    cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+    out_cursor = cursor.var(cx_Oracle.CURSOR)
+
+    cursor.callproc("SYS.get_DetalleFacturaPFresco",(id_factura,out_cursor,))
+    result = out_cursor.getvalue()
+    productosFrescos = []
+
+    for row in result:
+            productoFresco = {
+                "PLU" : row[0],
+                "descripcion" : row[1],
+                "precio" : row[2],
+                "gramos_comprados" : row[3],
+                "subtotal" : row[4]
+            }
+            productosFrescos.append(productoFresco)
+    return productosFrescos

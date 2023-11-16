@@ -100,3 +100,11 @@ GRANT EXECUTE, DEBUG ON SYS.getAllFactura TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getFacturaById TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.updateFactura TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.deleteFactura TO personal_sistemas;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.DetalleFacturaProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.insert_DetalleFacturaProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.get_DetalleFacturaProducto TO personal_sistemas;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.DetalleFacturaPFresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.insert_DetalleFacturaPFresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.get_DetalleFacturaPFresco TO personal_sistemas;

@@ -1,4 +1,4 @@
---SEQUENCE PARA DETALLE FACTURA ID
+--SEQUENCE PARA DETALLE FACTURA PRODUCTO ID
 CREATE SEQUENCE  detalleFacturaProducto_seq
   START WITH 1
   INCREMENT BY 1
@@ -28,12 +28,12 @@ BEGIN
     INSERT INTO DetalleFacturaProducto (detalleFacturaProducto_ID, FacturaID, ProductoID,Cantidad)
     VALUES (in_detalleFacturaProductoID,in_FacturaID, in_ProductoID,in_Cantidad);
     
-    --realizar descuento del stock
+    --realizar descuento del stock (Producto)
     UPDATE Productos SET cantidad = cantidad - in_Cantidad WHERE Producto_ID = in_ProductoID;
 END insert_DetalleFacturaProducto;
 /
 
---#3 GET DETALLES FACTURA POR ID FACTURA
+--#3 GET DETALLES FACTURA POR ID FACTURA (PRODUCTOS)
 CREATE OR REPLACE PROCEDURE get_DetalleFacturaProducto (
     in_FacturaID IN NUMBER,
     out_cursor OUT SYS_REFCURSOR
@@ -41,7 +41,15 @@ CREATE OR REPLACE PROCEDURE get_DetalleFacturaProducto (
 AS
 BEGIN
     OPEN out_cursor FOR
-    SELECT * FROM DetalleFacturaProducto WHERE FacturaID = in_FacturaID;
+        SELECT
+               p.EAN,
+               p.Descripcion,
+               p.Precio,
+               dfp.Cantidad AS cantidad_Comprada,
+               (dfp.Cantidad * p.Precio) AS Subtotal
+          FROM DetalleFacturaProducto dfp
+          JOIN Productos p ON dfp.ProductoID = p.Producto_ID
+         WHERE dfp.FacturaID = in_facturaID;
 END get_DetalleFacturaProducto;
 /
 
