@@ -148,17 +148,7 @@ END;
 /
 
 --Borrar la caja número 5
---Puede que el mensaje de confirmacion no se vea en SQL Developer
-SET SERVEROUTPUT ON;
-
-DECLARE
-  exito BOOLEAN;
 BEGIN
-  BorrarCaja(5, exito);
-  IF exito THEN
-    DBMS_OUTPUT.PUT_LINE('Borrado exitoso'); 
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('No se pudo borrar la caja');
-  END IF;
+  BorrarCaja(5);
 END;
 -- /
