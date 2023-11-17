@@ -35,7 +35,7 @@ EXCEPTION
     -- Maneja errores que puedan ocurrir durante la inserción
     DBMS_OUTPUT.PUT_LINE('Error al insertar un nuevo valor en la tabla "caja".');
 END InsertarCaja;
-
+/
 
 /*ENLISTA TODAS LAS CAJAS CREADAS*/
 CREATE OR REPLACE PROCEDURE BuscarCajas(
@@ -55,6 +55,7 @@ EXCEPTION
     -- Maneja otros errores que puedan ocurrir durante la consulta
     DBMS_OUTPUT.PUT_LINE('Se produjo un error al consultar la tabla "caja".');
 END BuscarCajas;
+/
 
 /*BUSCA UNA CAJA POR NUMERO*/
 CREATE OR REPLACE PROCEDURE BuscarCaja(
@@ -76,7 +77,7 @@ EXCEPTION
     -- Maneja otros errores que puedan ocurrir durante la consulta
     DBMS_OUTPUT.PUT_LINE('Se produjo un error al consultar las cajas por número de caja.');
 END BuscarCaja;
-
+/
 
 /*ACTUALIZA EL NUMERO DE CAJA SEGÚN EL ID DE LA CAJA*/
 CREATE OR REPLACE PROCEDURE ActualizarCaja(
@@ -122,6 +123,7 @@ EXCEPTION
     -- Maneja errores que puedan ocurrir durante la eliminación
     DBMS_OUTPUT.PUT_LINE('Error al borrar la caja.');
 END BorrarCaja;
+/
 
 ---------------------------------- Tabla Factura  -----------------------------------------
 
@@ -524,25 +526,23 @@ BEGIN
 END getPfrescoPorDescripcion;
 /
 
----------------------------------- Tabla Factura  -----------------------------------------
+---------------------------------- Tabla Detalle Factura PFresco  -----------------------------------------
 
-/* SE CREA UNA SECUENCIA PARA EL AUTO INCREMENTABLE DEL ID DE FACTURA */
-CREATE SEQUENCE factura_id_sequence
+--SEQUENCE PARA DETALLE FACTURA PRODUCTO FRESCO ID
+CREATE SEQUENCE  detalleFacturaPFresco_seq
   START WITH 1
   INCREMENT BY 1
   NOCACHE
   NOCYCLE;
-
-/* SE CREA LA TABLA FACTURA */
-CREATE TABLE factura (
-  factura_Id NUMBER PRIMARY KEY,
-  numero_factura NUMBER,
-  monto_total NUMBER,
-  fecha DATE,
-  hora TIMESTAMP,
-  cajero_Id NUMBER,
-  caja_Id NUMBER,
-  FOREIGN KEY (caja_Id) REFERENCES caja (caja_ID)
+  
+--#1 TABLA PARA ALMACENAR DETALLES DE UNA FACTURA (PRODUCTO FRESCO)
+CREATE TABLE DetalleFacturaPFresco (
+    detalleFacturaPFresco_ID NUMBER PRIMARY KEY,
+    FacturaID NUMBER,
+    PFrescoID NUMBER,
+    peso NUMBER,
+    CONSTRAINT fk_factura2 FOREIGN KEY (FacturaID) REFERENCES factura(factura_Id),
+    CONSTRAINT fk_pfresco FOREIGN KEY (PFrescoID) REFERENCES pfresco(Pfresco_Id)
 ) TABLESPACE tables_data;
 
 
@@ -550,92 +550,61 @@ CREATE TABLE factura (
 ----------------------------- PROCEDIMIENTOS ALMACENADOS ----------------------------------------
 
 
-/* PROCEDIMIENTO PARA INSERTAR UNA FACTURA */
-CREATE OR REPLACE PROCEDURE insertFactura (
-    p_numero_factura IN NUMBER,
-    p_monto_total IN NUMBER,
-    p_fecha IN DATE,
-    p_hora IN TIMESTAMP,
-    p_cajero_Id IN NUMBER,
-    p_caja_Id IN NUMBER
+--#2 INSERTAR DETALLE FACTURA (PRODUCTO FRESCO)
+CREATE OR REPLACE PROCEDURE insert_DetalleFacturaPFresco (
+    in_FacturaID IN NUMBER,
+    in_PFrescoID IN NUMBER,
+    in_Peso IN NUMBER
 )
 IS
-    p_factura_Id NUMBER;
+    in_detalleFacturaPFrescoID NUMBER;
 BEGIN
-    SELECT factura_id_sequence.NEXTVAL INTO p_factura_Id FROM DUAL;
-    INSERT INTO factura (factura_Id, numero_factura, monto_total, fecha, hora, cajero_Id, caja_Id)
-    VALUES (p_factura_Id, p_numero_factura, p_monto_total, p_fecha, p_hora, p_cajero_Id, p_caja_Id);
-END insertFactura;
+    SELECT detalleFacturaPFresco_seq.NEXTVAL INTO in_detalleFacturaPFrescoID FROM DUAL;
+    INSERT INTO DetalleFacturaPFresco (detalleFacturaPFresco_ID, FacturaID,PFrescoID,Peso)
+    VALUES (in_detalleFacturaPFrescoID,in_FacturaID,in_PFrescoID,in_Peso);
+    
+    --realizar descuento del stock (PFresco)
+    UPDATE pfresco SET peso = peso - in_peso WHERE Pfresco_Id = in_PFrescoID;
+END insert_DetalleFacturaPFresco;
 /
 
-/* PROCEDIMIENTO PARA ENLISTAR TODAS LAS FACTURAS */
-CREATE OR REPLACE PROCEDURE getAllFactura (
-    p_Facturas OUT SYS_REFCURSOR
+--#3 GET DETALLES FACTURA POR ID FACTURA (PRODUCTOS FRESCOS)
+CREATE OR REPLACE PROCEDURE get_DetalleFacturaPFresco (
+    in_FacturaID IN NUMBER,
+    out_cursor OUT SYS_REFCURSOR
 )
 AS
 BEGIN
-    OPEN p_Facturas FOR
-    SELECT factura_Id, numero_factura, monto_total, fecha, hora, cajero_Id, caja_Id FROM factura;
-END getAllFactura;
+    OPEN out_cursor FOR
+        SELECT
+               p.PLU,
+               p.Descripcion,
+               p.Precio,
+               dfpf.peso AS gramos_comprados,
+               (dfpf.peso * p.Precio) AS Subtotal
+          FROM DetalleFacturaPFresco dfpf
+          JOIN PFresco p ON dfpf.PFrescoID = p.Pfresco_Id
+         WHERE dfpf.FacturaID = in_facturaID;
+END get_DetalleFacturaPFresco;
 /
 
-CREATE OR REPLACE PROCEDURE getFacturaById (
-    p_Factura_Id IN NUMBER,
-    p_Factura OUT SYS_REFCURSOR
-)
-AS
-BEGIN
-    OPEN p_Factura FOR
-    SELECT factura_Id, numero_factura, monto_total, fecha, hora, cajero_Id, caja_Id FROM factura WHERE factura_Id = p_Factura_Id;
-END getFacturaById;
-/
+---------------------------------- Tabla Detalle Factura Producto -----------------------------------------
 
-/* PROCEDIMIENTO PARA ACTUALIZAR UNA FACTURA */
-CREATE OR REPLACE PROCEDURE updateFactura (
-    p_factura_Id IN NUMBER,
-    p_numero_factura IN NUMBER,
-    p_monto_total IN NUMBER,
-    p_fecha IN DATE,
-    p_hora IN TIMESTAMP,
-    p_cajero_Id IN NUMBER,
-    p_caja_Id IN NUMBER
-)
-AS
-BEGIN
-    UPDATE factura
-    SET numero_factura = p_numero_factura, monto_total = p_monto_total, fecha = p_fecha, hora = p_hora, cajero_Id = p_cajero_Id, caja_Id = p_caja_Id
-    WHERE factura_Id = p_factura_Id;
-END updateFactura;
-/
-
-/* PROCEDIMIENTO PARA ELIMINAR UNA FACTURA */
-CREATE OR REPLACE PROCEDURE deleteFactura (
-    p_factura_Id IN NUMBER
-)
-AS
-BEGIN
-    DELETE FROM factura WHERE factura_Id = p_factura_Id;
-END deleteFactura;
-/
-
----------------------------------- Tabla Detalle -----------------------------------------
-
--- SE CREA UNA SECUENCIA PARA EL AUTO INCREMENTABLE DEL ID DE DETALLE FACTURA
-CREATE SEQUENCE detalle_factura_id_sequence
+--SEQUENCE PARA DETALLE FACTURA PRODUCTO ID
+CREATE SEQUENCE  detalleFacturaProducto_seq
   START WITH 1
   INCREMENT BY 1
   NOCACHE
   NOCYCLE;
 
--- SE CREA LA TABLA DETALLE FACTURA
-CREATE TABLE detalle_factura (
-  detalle_id NUMBER PRIMARY KEY,
-  factura_id NUMBER,
-  producto_id NUMBER,
-  pfresco_id NUMBER,
-  FOREIGN KEY (factura_id) REFERENCES factura (factura_Id),
-  FOREIGN KEY (producto_id) REFERENCES Productos (Producto_ID),
-  FOREIGN KEY (pfresco_id) REFERENCES pfresco (Pfresco_Id)
+--#1 TABLA PARA ALMACENAR DETALLES DE UNA FACTURA (PRODUCTO)
+CREATE TABLE DetalleFacturaProducto (
+    detalleFacturaProducto_ID NUMBER PRIMARY KEY,
+    FacturaID NUMBER,
+    ProductoID NUMBER,
+    Cantidad NUMBER,
+    CONSTRAINT fk_factura FOREIGN KEY (FacturaID) REFERENCES factura(factura_Id),
+    CONSTRAINT fk_producto FOREIGN KEY (ProductoID) REFERENCES Productos(Producto_ID)
 ) TABLESPACE tables_data;
 
 
@@ -643,121 +612,61 @@ CREATE TABLE detalle_factura (
 ----------------------------- PROCEDIMIENTOS ALMACENADOS ----------------------------------------
 
 
-/* PROCEDIMIENTO PARA INSERTAR UN DETALLE DE FACTURA */
-CREATE OR REPLACE PROCEDURE insertDetalleFactura (
-    p_factura_id IN NUMBER,
-    p_producto_id IN NUMBER,
-    p_pfresco_id IN NUMBER
+--#2 INSERTAR DETALLE FACTURA (PRODUCTO)
+CREATE OR REPLACE PROCEDURE insert_DetalleFacturaProducto (
+    in_FacturaID IN NUMBER,
+    in_ProductoID IN NUMBER,
+    in_Cantidad IN NUMBER
 )
 IS
+    in_detalleFacturaProductoID NUMBER;
 BEGIN
-    -- Obtiene el próximo valor de la secuencia para detalle_id
-    DECLARE
-      v_detalle_id NUMBER;
-    BEGIN
-      SELECT detalle_factura_id_sequence.NEXTVAL INTO v_detalle_id FROM DUAL;
-      
-      -- Inserta un nuevo registro en la tabla "detalle_factura"
-      INSERT INTO detalle_factura (detalle_id, factura_id, producto_id, pfresco_id)
-      VALUES (v_detalle_id, p_factura_id, p_producto_id, p_pfresco_id);
-      
-      COMMIT; -- Confirma la transacción
-    EXCEPTION
-      WHEN OTHERS THEN
-        -- Maneja errores que puedan ocurrir durante la inserción
-        DBMS_OUTPUT.PUT_LINE('Error al insertar un nuevo detalle de factura.');
-    END;
-END insertDetalleFactura;
-/
-
-/* PROCEDIMIENTO PARA ACTUALIZAR UN DETALLE DE FACTURA */
-CREATE OR REPLACE PROCEDURE updateDetalleFactura (
-    p_detalle_id IN NUMBER,
-    p_factura_id IN NUMBER,
-    p_producto_id IN NUMBER,
-    p_pfresco_id IN NUMBER
-)
-IS
-BEGIN
-    -- Actualiza los datos del detalle de factura específico
-    UPDATE detalle_factura
-    SET factura_id = p_factura_id, producto_id = p_producto_id, pfresco_id = p_pfresco_id
-    WHERE detalle_id = p_detalle_id;
-
-    COMMIT; -- Confirma la transacción
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      -- Maneja el caso en que no se encuentra el detalle de factura con el detalle_id especificado
-      DBMS_OUTPUT.PUT_LINE('No se encontró el detalle de factura con el detalle_id proporcionado.');
-    WHEN OTHERS THEN
-      -- Maneja otros errores que puedan ocurrir durante la actualización
-      DBMS_OUTPUT.PUT_LINE('Error al actualizar el detalle de factura.');
-END updateDetalleFactura;
-/
-
-/* PROCEDIMIENTO PARA ELIMINAR UN DETALLE DE FACTURA */
-CREATE OR REPLACE PROCEDURE deleteDetalleFactura (
-    p_detalle_id IN NUMBER
-)
-IS
-BEGIN
-    -- Intentamos borrar el registro del detalle de factura con el detalle_id especificado
-    DELETE FROM detalle_factura
-    WHERE detalle_id = p_detalle_id;
+    SELECT detalleFacturaProducto_seq.NEXTVAL INTO in_detalleFacturaProductoID FROM DUAL;
+    INSERT INTO DetalleFacturaProducto (detalleFacturaProducto_ID, FacturaID, ProductoID,Cantidad)
+    VALUES (in_detalleFacturaProductoID,in_FacturaID, in_ProductoID,in_Cantidad);
     
-    IF SQL%ROWCOUNT = 1 THEN
-        DBMS_OUTPUT.PUT_LINE('Borrado exitoso');
-    ELSE
-        DBMS_OUTPUT.PUT_LINE('No se pudo borrar el detalle de factura');
-    END IF;
-    
-    COMMIT; -- Confirma la transacción
-EXCEPTION
-    WHEN OTHERS THEN
-        -- Maneja errores que puedan ocurrir durante la eliminación
-        DBMS_OUTPUT.PUT_LINE('Error al borrar el detalle de factura.');
-END deleteDetalleFactura;
+    --realizar descuento del stock (Producto)
+    UPDATE Productos SET cantidad = cantidad - in_Cantidad WHERE Producto_ID = in_ProductoID;
+END insert_DetalleFacturaProducto;
 /
 
-/* PROCEDIMIENTO PARA OBTENER DETALLES DE FACTURA POR FACTURA_ID */
-CREATE OR REPLACE PROCEDURE getDetalleFacturaByFacturaId (
-    p_factura_id IN NUMBER,
-    p_Detalle OUT SYS_REFCURSOR
+--#3 GET DETALLES FACTURA POR ID FACTURA (PRODUCTOS)
+CREATE OR REPLACE PROCEDURE get_DetalleFacturaProducto (
+    in_FacturaID IN NUMBER,
+    out_cursor OUT SYS_REFCURSOR
 )
 AS
 BEGIN
-    -- Realiza la consulta de detalles de factura por factura_id
-    OPEN p_Detalle FOR
-    SELECT detalle_id, factura_id, producto_id, pfresco_id
-    FROM detalle_factura
-    WHERE factura_id = p_factura_id;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        -- Maneja el caso en que no se encuentran registros para el factura_id especificado
-        DBMS_OUTPUT.PUT_LINE('No se encontraron detalles de factura para el factura_id proporcionado.');
-    WHEN OTHERS THEN
-        -- Maneja otros errores que puedan ocurrir durante la consulta
-        DBMS_OUTPUT.PUT_LINE('Se produjo un error al consultar los detalles de factura por factura_id.');
-END getDetalleFacturaByFacturaId;
+    OPEN out_cursor FOR
+        SELECT
+               p.EAN,
+               p.Descripcion,
+               p.Precio,
+               dfp.Cantidad AS cantidad_Comprada,
+               (dfp.Cantidad * p.Precio) AS Subtotal
+          FROM DetalleFacturaProducto dfp
+          JOIN Productos p ON dfp.ProductoID = p.Producto_ID
+         WHERE dfp.FacturaID = in_facturaID;
+END get_DetalleFacturaProducto;
 /
 
-/* PROCEDIMIENTO PARA OBTENER TODOS LOS DETALLES DE FACTURA */
-CREATE OR REPLACE PROCEDURE getAllDetalleFactura (
-    p_Detalles OUT SYS_REFCURSOR
+---------------------------------- Usuarios -----------------------------------------
+-------------------------------------------------------------------------------------------------
+----------------------------- PROCEDIMIENTOS ALMACENADOS ----------------------------------------
+
+--DEVOLVER DATOS DE UN USUARIO POR EL NOMBRE
+CREATE OR REPLACE PROCEDURE BuscarDatosUsuario(
+  nombre_usuario IN VARCHAR2,
+  cursor OUT SYS_REFCURSOR
 )
-AS
+IS
 BEGIN
-    -- Realiza la consulta de todos los detalles de factura
-    OPEN p_Detalles FOR
-    SELECT detalle_id, factura_id, producto_id, pfresco_id
-    FROM detalle_factura;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        -- Maneja el caso en que la tabla "detalle_factura" no existe o está vacía
-        DBMS_OUTPUT.PUT_LINE('La tabla "detalle_factura" no existe o no contiene datos.');
-    WHEN OTHERS THEN
-        -- Maneja otros errores que puedan ocurrir durante la consulta
-        DBMS_OUTPUT.PUT_LINE('Se produjo un error al consultar los detalles de factura.');
-END getAllDetalleFactura;
+  OPEN cursor FOR
+  SELECT u.user_id, r.granted_role
+  FROM dba_users u
+  JOIN dba_role_privs r ON u.username = r.grantee
+  WHERE u.username = nombre_usuario;
+END BuscarDatosUsuario;
 /
+
 
