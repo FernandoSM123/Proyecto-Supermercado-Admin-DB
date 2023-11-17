@@ -116,6 +116,32 @@ EXCEPTION
 END updatePfresco;
 /
 
+/* PROCEDIMIENTO PARA ACTUALIZAR UN PRODUCTO FRESCO */
+CREATE OR REPLACE PROCEDURE updateDescripcionCantidadPfresco(
+  Pfresco_Id_in NUMBER,
+  nueva_descripcion_in VARCHAR2,
+  nuevo_peso_in NUMBER
+)
+IS
+BEGIN
+  -- Actualiza los datos del producto fresco específico
+  UPDATE pfresco
+  SET
+    descripcion = nueva_descripcion_in,
+    peso = nuevo_peso_in,
+  WHERE Pfresco_Id = Pfresco_Id_in;
+
+  COMMIT; -- Confirma la transacción
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    -- Maneja el caso en que no se encuentra el producto fresco con el Pfresco_Id especificado
+    DBMS_OUTPUT.PUT_LINE('No se encontró el producto fresco con el Pfresco_Id proporcionado.');
+  WHEN OTHERS THEN
+    -- Maneja otros errores que puedan ocurrir durante la actualización
+    DBMS_OUTPUT.PUT_LINE('Error al actualizar el producto fresco.');
+END updateDescripcionCantidadPfresco;
+/
+
 /* PROCEDIMIENTO PARA ELIMINAR UN PRODUCTO FRESCO */
 CREATE OR REPLACE PROCEDURE deletePfresco(
   Pfresco_Id_in NUMBER

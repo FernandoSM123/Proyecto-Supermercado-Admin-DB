@@ -13,9 +13,7 @@ BEGIN
 END BuscarDatosUsuario;
 /
 
-/*
------------ DATOS PARA PRUEBAS ------------
-*/
+/* ----------- DATOS PARA PRUEBAS ------------ */
 
 SET SERVEROUTPUT ON;
 

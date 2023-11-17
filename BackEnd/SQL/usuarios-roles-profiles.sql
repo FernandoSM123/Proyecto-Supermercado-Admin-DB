@@ -118,10 +118,11 @@ CREATE USER michael IDENTIFIED BY michael123
     TEMPORARY TABLESPACE temp;
 
 -- ASIGNACION DE ROL PARA LOS USUARIOS
-GRANT gerente_area TO dylan;
-GRANT gerente_area TO karen;
-GRANT gerente_area TO tatiana;
-GRANT gerente_area TO michael;
+GRANT gerente_area TO dylan;   -- Gerente de Frescos
+-- Estos son los Gerentes a los que se les tiene que asignar los permisos.
+GRANT gerente_area TO karen;   -- Gerente de Abarrotes
+GRANT gerente_area TO tatiana; -- Gerente de Cuidado personal
+GRANT gerente_area TO michael; -- Gerente de Mercancia
 
 --USUARIOS GERENTE GENERAL
 CREATE USER emilio IDENTIFIED BY emilio123
@@ -150,18 +151,16 @@ GRANT personal_sistemas TO fabian;
 GRANT personal_sistemas TO roberto;
 
 ------------------------- Asignacion de permisos de acceso segun rol ----------------------------
--- Pendiente hacer todos
 
+-- Permisos personal de sistemas
 ALTER SESSION SET "_ORACLE_SCRIPT" = true;
-GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.Productos TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON SYS.getAllProductos TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON SYS.getProductoByID TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON SYS.updateProducto TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON SYS.insertProducto TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON SYS.deleteProducto TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON SYS.precioProducto TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON SYS.getProductosPorCodigo TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON SYS.getProductosPorDescripcion TO personal_sistemas;
+GRANT SELECT, INSERT, UPDATE, DELETE ON DetalleFacturaPFresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON insert_DetalleFacturaPFresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON get_DetalleFacturaPFresco TO personal_sistemas;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON DetalleFacturaProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON insert_DetalleFacturaProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON get_DetalleFacturaProducto TO personal_sistemas;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.caja TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.BuscarCajas TO personal_sistemas;
@@ -169,6 +168,13 @@ GRANT EXECUTE, DEBUG ON SYS.BuscarCaja TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.ActualizarCaja TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.InsertarCaja TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.BorrarCaja TO personal_sistemas;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON factura TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getAllFactura TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getFacturaById TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.insertFactura TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.updateFactura TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.deleteFactura TO personal_sistemas;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.pfresco TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getAllPfrescos TO personal_sistemas;
@@ -180,10 +186,86 @@ GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorPLU TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorDescripcion TO personal_sistemas;
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON factura TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON getAllFactura TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON getFacturaById TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON insertFactura TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON updateFactura TO personal_sistemas;
-GRANT EXECUTE, DEBUG ON deleteFactura TO personal_sistemas;
+GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.Productos TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getAllProductos TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getProductoByID TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.updateProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.insertProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.deleteProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.precioProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getProductosPorCodigo TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getProductosPorDescripcion TO personal_sistemas;
 
+-- Permisos Cajeros 
+GRANT connect TO cajero;
+GRANT SELECT ON dba_role_privs TO cajero;
+GRANT SELECT ON dba_users TO cajero;
+GRANT CREATE SESSION TO cajero;
+GRANT EXECUTE ON sys.buscardatosusuario TO cajero;
+
+GRANT SELECT ON SYS.caja TO cajero;
+GRANT EXECUTE, DEBUG ON SYS.BuscarCaja TO cajero;
+
+GRANT SELECT ON SYS.pfresco TO cajero;
+GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO cajero;
+
+GRANT SELECT ON SYS.Productos TO cajero;
+GRANT EXECUTE ON sys.precioProducto TO cajero;
+
+GRANT INSERT ON SYS.factura TO cajero;
+GRANT EXECUTE, DEBUG ON SYS.insertFactura TO cajero;
+
+GRANT INSERT ON DetalleFacturaProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON insert_DetalleFacturaProducto TO cajero;
+GRANT EXECUTE, DEBUG ON insert_DetalleFacturaPFresco TO cajero;
+
+-- Permisos Gerente de area
+GRANT connect TO gerente_area;
+GRANT SELECT ON dba_role_privs TO gerente_area;
+GRANT SELECT ON dba_users TO gerente_area;
+GRANT CREATE SESSION TO gerente_area;
+GRANT EXECUTE ON sys.buscardatosusuario TO gerente_area;
+
+GRANT SELECT ON SYS.Productos TO gerente_area;
+GRANT EXECUTE ON sys.getProductosPorCodigo TO gerente_area;
+GRANT EXECUTE ON sys.getProductosPorDescripcion TO gerente_area;
+GRANT EXECUTE ON sys.precioProducto TO gerente_area;
+-- FALTA EL ACTUALIZAR CANTIDAD Y DESCRIPCION
+-- Se debe crear una columna nueva "tipoProducto" en la tabla productos, que diga si un producto es 
+-- abarrote, cuidado personal o mercancía. Este cambio afecta el insert y el update, por lo que hay que 
+-- actulizar dichos procedimientos. 
+-- Luego se tiene que crear 3 procedimientos que solo actualice la descripción y la cantidad, 
+-- para cada tipo de producto. Esto se le tiene que asignar a cada gerente de area según su departamento.    
+
+GRANT SELECT ON SYS.pfresco TO gerente_area;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorPLU TO gerente_area;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorDescripcion TO gerente_area;
+GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO gerente_area;
+GRANT EXECUTE, DEBUG ON SYS.updateDescripcionCantidadPfresco TO gerente_area;
+
+-- Permisos Gerente General
+GRANT connect TO gerente_general;
+GRANT SELECT ON dba_role_privs TO gerente_general;
+GRANT SELECT ON dba_users TO gerente_general;
+GRANT CREATE SESSION TO gerente_general;
+GRANT EXECUTE ON sys.buscardatosusuario TO gerente_general;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.Productos TO gerente_general;
+GRANT EXECUTE ON sys.getAllProductos TO gerente_general;
+GRANT EXECUTE ON sys.getProductoByID TO gerente_general;
+GRANT EXECUTE ON sys.updateProducto TO gerente_general;
+GRANT EXECUTE ON sys.insertProducto TO gerente_general;
+GRANT EXECUTE ON sys.deleteProducto TO gerente_general;
+GRANT EXECUTE ON SYS.precioProducto TO gerente_general;
+GRANT EXECUTE ON SYS.getProductosPorCodigo TO gerente_general;
+GRANT EXECUTE ON SYS.getProductosPorDescripcion TO gerente_general;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.pfresco TO gerente_general;
+GRANT EXECUTE, DEBUG ON SYS.getAllPfrescos TO gerente_general;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoById TO gerente_general;
+GRANT EXECUTE, DEBUG ON SYS.updatePfresco TO gerente_general;
+GRANT EXECUTE, DEBUG ON SYS.InsertPfresco TO gerente_general;
+GRANT EXECUTE, DEBUG ON SYS.deletePfresco TO gerente_general;
+GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO gerente_general;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorPLU TO gerente_general;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorDescripcion TO gerente_general;
