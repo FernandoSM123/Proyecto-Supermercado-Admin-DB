@@ -42,23 +42,44 @@ END insertFactura;
 
 /* PROCEDIMIENTO PARA ENLISTAR TODAS LAS FACTURAS */
 CREATE OR REPLACE PROCEDURE getAllFactura (
-    p_Facturas OUT SYS_REFCURSOR
+    out_cursor OUT SYS_REFCURSOR
 )
 AS
 BEGIN
-    OPEN p_Facturas FOR
-    SELECT factura_Id, numero_factura, monto_total, fecha, hora, cajero_Id, caja_Id FROM factura;
+    OPEN out_cursor FOR
+        SELECT
+                f.factura_Id, 
+                f.numero_factura, 
+                f.monto_total, 
+                f.fecha, 
+                f.hora,
+                f.caja_Id, 
+                f.cajero_id, 
+                c.USERNAME as cajero
+          FROM Factura f
+          JOIN dba_users c ON f.cajero_id = c.USER_ID;
 END getAllFactura;
 /
 
 CREATE OR REPLACE PROCEDURE getFacturaById (
-    p_Factura_Id IN NUMBER,
-    p_Factura OUT SYS_REFCURSOR
+    in_FacturaID IN NUMBER,
+    out_cursor OUT SYS_REFCURSOR
 )
 AS
 BEGIN
-    OPEN p_Factura FOR
-    SELECT factura_Id, numero_factura, monto_total, fecha, hora, cajero_Id, caja_Id FROM factura WHERE factura_Id = p_Factura_Id;
+    OPEN out_cursor FOR
+        SELECT
+                f.factura_Id, 
+                f.numero_factura, 
+                f.monto_total, 
+                f.fecha, 
+                f.hora,
+                f.caja_Id, 
+                f.cajero_id, 
+                c.USERNAME as cajero
+          FROM Factura f
+          JOIN dba_users c ON f.cajero_id = c.USER_ID
+         WHERE f.factura_id = in_facturaID;
 END getFacturaById;
 /
 
@@ -111,7 +132,8 @@ EXEC getAllFactura(:mi_cursor);
 PRINT mi_cursor;
 
 --Buscamos una factura por su factura_Id
-EXEC getFacturaById(2, :mi_cursor);
+VAR mi_cursor REFCURSOR;
+EXEC getFacturaById(17, :mi_cursor);
 PRINT mi_cursor;
 
 --Se actualizan los datos de una factura
