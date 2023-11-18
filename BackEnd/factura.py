@@ -32,15 +32,16 @@ def getAllFacturas():
             productosFrescos = getProductosFrescosFactura(facturaID) #obtener productos frescos factura
             
             factura = {
-            "factura_id" : row[0],
-            "numero_factura" : row[1],
-            "monto_total" : row[2],
-            "fecha" : row[3].strftime('%Y-%m-%d'),   #Le damos formato a la fecha
-            "hora" : row[4].strftime('%I:%M:%S %p'), #Le damos formato a la hora
-            "cajero_id" : row[5],
-            "caja_id" : row[6],
-            "productos": productos,
-            "productosFrescos": productosFrescos
+                "factura_id" : row[0],
+                "numero_factura" : row[1],
+                "monto_total" : row[2],
+                "fecha" : row[3].strftime('%Y-%m-%d'),   #Le damos formato a la fecha
+                "hora" : row[4].strftime('%I:%M:%S %p'), #Le damos formato a la hora
+                "numero de caja" : row[5],
+                "cajero_id" : row[6],
+                "cajero" : row[7],
+                "productos": productos,
+                "productosFrescos": productosFrescos
             }
             facturas.append(factura)
         
@@ -78,8 +79,9 @@ def getFacturaById(id):
                 "monto_total" : row[2],
                 "fecha" : row[3].strftime('%Y-%m-%d'),   #Le damos formato a la fecha
                 "hora" : row[4].strftime('%I:%M:%S %p'), #Le damos formato a la hora
-                "cajero_id" : row[5],
-                "caja_id" : row[6],
+                "numero de caja" : row[5],
+                "cajero_id" : row[6],
+                "cajero" : row[7],
                 "productos": productos,
                 "productosFrescos": productosFrescos
             }

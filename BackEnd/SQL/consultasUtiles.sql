@@ -18,6 +18,7 @@ select * from DetalleFacturaPFresco;
 delete from productos;
 delete from factura;
 delete from DetalleFacturaProducto;
+delete from DetalleFacturaPFresco;
 
 --DELETE TABLAS
 DROP TABLE DetalleFactura;
