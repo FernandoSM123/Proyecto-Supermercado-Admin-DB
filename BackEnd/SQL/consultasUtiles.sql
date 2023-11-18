@@ -12,6 +12,7 @@ select * from pfresco;
 select * from factura;
 select * from caja;
 select * from DetalleFacturaProducto;
+select * from DetalleFacturaPFresco;
 
 --DELETE DATOS TABLAS
 delete from productos;

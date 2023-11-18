@@ -130,11 +130,18 @@ def insertFactura():
     hora = datetime.strptime(data.get('hora'), '%Y-%m-%d %H:%M:%S')
     cajero_id = data.get('cajero_id')
     caja_id = data.get('caja_id')
+    productos = data.get('productos')
+    pfrescos = data.get('productosFrescos')
 
     try:
+
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
-        cursor.callproc("SYS.insertFactura", (num_factura, monto_total, fecha, hora, cajero_id, caja_id))
+        id_factura = cursor.var(cx_Oracle.NUMBER) #id de la factura a insertar
+        cursor.callproc("SYS.insertFactura", (num_factura, monto_total, fecha, hora, cajero_id, caja_id,id_factura))
+        print("id factura:",int(id_factura.getvalue()))
         cursor.execute("COMMIT")
+        insertProductosFactura(int(id_factura.getvalue()),productos) #guardar productos de la factura
+        insertProductosFrescosFactura(int(id_factura.getvalue()),pfrescos) #guardar productos frescos de la factura
         
         return jsonify({'mensaje': 'Factura insertada'}), 200
     except ValueError:
@@ -161,40 +168,72 @@ def deletePfresco(id):
 
 #OBTENER PRODUCTOS ASOCIADOS A UNA FACTURA
 def getProductosFactura(id_factura):
-    cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
-    out_cursor = cursor.var(cx_Oracle.CURSOR)
+    try:
+        cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+        out_cursor = cursor.var(cx_Oracle.CURSOR)
 
-    cursor.callproc("SYS.get_DetalleFacturaProducto",(id_factura,out_cursor,))
-    result = out_cursor.getvalue()
-    productos = []
+        cursor.callproc("SYS.get_DetalleFacturaProducto",(id_factura,out_cursor,))
+        result = out_cursor.getvalue()
+        productos = []
 
-    for row in result:
-            producto = {
-                "EAN" : row[0],
-                "descripcion" : row[1],
-                "precio" : row[2],
-                "cantidad_comprada" : row[3],
-                "subtotal" : row[4]
-            }
-            productos.append(producto)
-    return productos
+        for row in result:
+                producto = {
+                    "EAN" : row[0],
+                    "descripcion" : row[1],
+                    "precio" : row[2],
+                    "cantidad" : row[3],
+                    "subtotal" : row[4]
+                }
+                productos.append(producto)
+        return productos
+    except Exception as e:
+        return e
 
 #OBTENER PRODUCTOS FRESCOS ASOCIADOS A UNA FACTURA
 def getProductosFrescosFactura(id_factura):
-    cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
-    out_cursor = cursor.var(cx_Oracle.CURSOR)
+    try:
+        cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+        out_cursor = cursor.var(cx_Oracle.CURSOR)
 
-    cursor.callproc("SYS.get_DetalleFacturaPFresco",(id_factura,out_cursor,))
-    result = out_cursor.getvalue()
-    productosFrescos = []
+        cursor.callproc("SYS.get_DetalleFacturaPFresco",(id_factura,out_cursor,))
+        result = out_cursor.getvalue()
+        productosFrescos = []
 
-    for row in result:
-            productoFresco = {
-                "PLU" : row[0],
-                "descripcion" : row[1],
-                "precio" : row[2],
-                "gramos_comprados" : row[3],
-                "subtotal" : row[4]
-            }
-            productosFrescos.append(productoFresco)
-    return productosFrescos
+        for row in result:
+                productoFresco = {
+                    "PLU" : row[0],
+                    "descripcion" : row[1],
+                    "precio" : row[2],
+                    "peso" : row[3],
+                    "subtotal" : row[4]
+                }
+                productosFrescos.append(productoFresco)
+        return productosFrescos
+    except Exception as e:
+        return e
+
+#INSERTAR DETALLES FACTURA DE PRODUCTO
+def insertProductosFactura(id_factura,productos):
+    try:
+        cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+
+        for producto in productos:
+            cursor.callproc("SYS.insert_DetalleFacturaProducto",(id_factura,
+                                                                producto["producto_id"],
+                                                                producto["cantidad"]))
+            cursor.execute("COMMIT")
+    except Exception as e:
+        return e
+    
+#INSERTAR DETALLES FACTURA DE PRODUCTO FRESCO
+def insertProductosFrescosFactura(id_factura,pfrescos):
+    try:
+        cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+
+        for pfresco in pfrescos:
+            cursor.callproc("SYS.insert_DetalleFacturaPFresco",(id_factura,
+                                                                pfresco["pfresco_id"],
+                                                                pfresco["peso"]))
+            cursor.execute("COMMIT")
+    except Exception as e:
+        return e

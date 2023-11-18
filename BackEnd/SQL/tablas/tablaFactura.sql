@@ -29,10 +29,10 @@ CREATE OR REPLACE PROCEDURE insertFactura (
     p_fecha IN DATE,
     p_hora IN TIMESTAMP,
     p_cajero_Id IN NUMBER,
-    p_caja_Id IN NUMBER
+    p_caja_Id IN NUMBER,
+    p_factura_Id OUT NUMBER
 )
 IS
-    p_factura_Id NUMBER;
 BEGIN
     SELECT factura_id_sequence.NEXTVAL INTO p_factura_Id FROM DUAL;
     INSERT INTO factura (factura_Id, numero_factura, monto_total, fecha, hora, cajero_Id, caja_Id)
