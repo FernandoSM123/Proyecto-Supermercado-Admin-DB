@@ -152,8 +152,16 @@ GRANT personal_sistemas TO roberto;
 
 ------------------------- Asignacion de permisos de acceso segun rol ----------------------------
 
--- Permisos personal de sistemas
+-- PERMISOS PERSONAL DE SISTEMAS
+
 ALTER SESSION SET "_ORACLE_SCRIPT" = true;
+
+GRANT connect TO personal_sistemas;
+GRANT SELECT ON dba_role_privs TO personal_sistemas;
+GRANT SELECT ON dba_users TO personal_sistemas;
+GRANT CREATE SESSION TO personal_sistemas;
+GRANT EXECUTE ON sys.buscardatosusuario TO personal_sistemas;
+
 GRANT SELECT, INSERT, UPDATE, DELETE ON DetalleFacturaPFresco TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON insert_DetalleFacturaPFresco TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON get_DetalleFacturaPFresco TO personal_sistemas;
@@ -200,7 +208,8 @@ GRANT SELECT ON DBA_AUDIT_TRAIL TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getAllAuditInfo TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getAuditInfoByUser TO personal_sistemas;
 
--- Permisos Cajeros 
+-- PERMISOS CAJEROS
+
 GRANT connect TO cajero;
 GRANT SELECT ON dba_role_privs TO cajero;
 GRANT SELECT ON dba_users TO cajero;
@@ -219,11 +228,16 @@ GRANT EXECUTE ON sys.precioProducto TO cajero;
 GRANT INSERT ON SYS.factura TO cajero;
 GRANT EXECUTE, DEBUG ON SYS.insertFactura TO cajero;
 
-GRANT INSERT ON DetalleFacturaProducto TO personal_sistemas;
+GRANT SELECT,INSERT ON DetalleFacturaProducto TO cajero;
 GRANT EXECUTE, DEBUG ON insert_DetalleFacturaProducto TO cajero;
 GRANT EXECUTE, DEBUG ON insert_DetalleFacturaPFresco TO cajero;
 
--- Permisos Gerente de area
+GRANT SELECT, INSERT ON DetalleFacturaPFresco TO cajero;
+GRANT EXECUTE, DEBUG ON insert_DetalleFacturaPFresco TO cajero;
+GRANT EXECUTE, DEBUG ON get_DetalleFacturaPFresco TO cajero;
+
+-- PERMISOS GERENTE DE AREA
+
 GRANT connect TO gerente_area;
 GRANT SELECT ON dba_role_privs TO gerente_area;
 GRANT SELECT ON dba_users TO gerente_area;
@@ -247,7 +261,8 @@ GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorDescripcion TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.updateDescripcionCantidadPfresco TO gerente_area;
 
--- Permisos Gerente General
+-- PERMISOS GERENTE GENERAL
+
 GRANT connect TO gerente_general;
 GRANT SELECT ON dba_role_privs TO gerente_general;
 GRANT SELECT ON dba_users TO gerente_general;

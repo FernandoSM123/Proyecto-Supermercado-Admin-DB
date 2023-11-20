@@ -13,7 +13,7 @@ def home():
 # GET ALL CAJAS
 # Este método no requiere ningún parametro
 # La ruta para consultar es /caja/getAll
-@pfresco.route("/getAll")
+@pfresco.route("/getAll", methods=["GET"])
 def getAllPfrescos():
     try:
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
@@ -43,7 +43,7 @@ def getAllPfrescos():
 # La ruta para este metodo es /pfresco/getById/id 
 # El parametro id en la ruta es el numero a consultar 
 # Ejemplo: http://127.0.0.1:5000/pfresco/getById/1
-@pfresco.route("/getById/<id>")
+@pfresco.route("/getById/<id>", methods=["GET"])
 def getPfrescoById(id):
     try:
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
