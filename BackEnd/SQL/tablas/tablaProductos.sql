@@ -123,14 +123,14 @@ END getProductosPorDescripcion;
 */
 
 BEGIN
-InsertProducto(1808124003091, 'Papel higiénico', 1500.00, 99);
+InsertProducto(1808124003091, 'Papel higiÃ©nico', 1500.00, 99);
 InsertProducto(4370783586295, 'Pasta de dientes colgate', 1000.00, 56);
-InsertProducto(5105235176997, 'Jabón de baño', 500.00, 76);
-InsertProducto(3934608083093, 'Champú', 2500.00, 93);
+InsertProducto(5105235176997, 'JabÃ³n de baÃ±o', 500.00, 76);
+InsertProducto(3934608083093, 'ChampÃº', 2500.00, 93);
 InsertProducto(2708092159052, 'Arroz', 1500.00, 99);
 InsertProducto(5778929407214, 'Frijoles en lata', 800.00, 60);
 InsertProducto(3484270445743, 'Aceite de cocina', 2000.00, 70);
-InsertProducto(6276827953045, 'Detergente líquido', 1500.00, 53);
+InsertProducto(6276827953045, 'Detergente lÃ­quido', 1500.00, 53);
 InsertProducto(9045603140164, 'Cereal de masmelos', 2500.00, 87);
 InsertProducto(6975935603398, 'Leche en polvo', 1500.00, 93);
 InsertProducto(1234567890123, 'Aceitunas rellenas de pimiento', 1200.00, 25);
@@ -138,11 +138,11 @@ InsertProducto(1234567890124, 'Cepillo de dientes', 800.00, 80);
 InsertProducto(1234567890125, 'Galletas saladas', 2000.00, 40);
 InsertProducto(1234567890126, 'Cereal de chocolate', 3000.00, 65);
 InsertProducto(1234567890127, 'Salsa de tomate', 1500.00, 55);
-InsertProducto(1234567890128, 'Pañuelos desechables', 1800.00, 70);
-InsertProducto(1234567890129, 'Pasta dental para niños', 1200.00, 90);
+InsertProducto(1234567890128, 'PaÃ±uelos desechables', 1800.00, 70);
+InsertProducto(1234567890129, 'Pasta dental para niÃ±os', 1200.00, 90);
 InsertProducto(1234567890130, 'Botella de vino tinto', 5000.00, 30);
 InsertProducto(1234567890131, 'Papel toalla', 2500.00, 75);
-InsertProducto(1234567890132, 'Café instantáneo', 3500.00, 45);
+InsertProducto(1234567890132, 'CafÃ© instantÃ¡neo', 3500.00, 45);
 END;
 /
 
