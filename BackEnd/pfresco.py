@@ -22,7 +22,6 @@ def getAllPfrescos():
         cursor.callproc("SYS.getAllPfrescos",(out_cursor,))
         result = out_cursor.getvalue()
         pfrescos = []
-        print(result)
 
         for row in result:
             pfresco = {
@@ -53,7 +52,6 @@ def getPfrescoById(id):
         cursor.callproc("SYS.getPfrescoById",(id ,out_cursor,))
         result = out_cursor.getvalue()
         pfrescos = []
-        print(result)
 
         for row in result:
             pfresco = {
@@ -134,7 +132,7 @@ def deletePfresco(id):
     except Exception as ex:
         return jsonify({'mensaje': 'Error al eliminar el producto fresco', 'error': str(ex)})
 
-# GET PRECIO PFRESCO 
+# GET PRECIO Y DESCRIPCION PFRESCO POR CODIGO 
 # recibe PLu del producto fresco a consultar
 # http://127.0.0.1:5000/pfresco/getPrecio/plu
 @pfresco.route("/getPrecio/<plu>", methods=["GET"])
@@ -153,8 +151,6 @@ def getPrecioPfresco(plu):
                 "precio": row[1]
             }
             pfrescos.append(pfresco)
-
-        # cursor.close()
 
         return jsonify({'mensaje': 'Precio del producto fresco recuperado', 'producto fresco': pfrescos}), 200
     except Exception as ex:
@@ -184,8 +180,6 @@ def getPfrescoPorCodigo(plu):
             }
             pfrescos.append(pfresco)
 
-        # cursor.close()
-
         return jsonify({'mensaje': 'Producto fresco recuperado por codigo', 'producto fresco': pfrescos}), 200
     except Exception as ex:
         return jsonify({'mensaje': 'Error al recuperar producto por codigo', 'error': str(ex)})
@@ -212,8 +206,6 @@ def getPfrescoPorDescripcion(descripcion):
                 "Precio": row[4]
             }
             pfrescos.append(pfresco)
-
-        # cursor.close()
 
         return jsonify({'mensaje': 'Productos fresco recuperados por descripcion', 'productos frescos': pfrescos}), 200
     except Exception as ex:
