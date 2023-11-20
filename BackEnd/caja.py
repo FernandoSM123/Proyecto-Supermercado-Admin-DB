@@ -22,7 +22,6 @@ def getAllCajas():
         cursor.callproc("SYS.BuscarCajas",(out_cursor,))
         result = out_cursor.getvalue()
         cajas = []
-        print(result)
 
         for row in result:
             caja = {
@@ -30,8 +29,6 @@ def getAllCajas():
             "numero_caja" : row[1]
             }
             cajas.append(caja)
-
-        #cursor.close()
 
         return jsonify({'mensaje': 'Todas las cajas recuperadas', 'cajas': cajas}), 200
     except Exception as ex:
@@ -50,7 +47,6 @@ def getCajaById(id):
         cursor.callproc("SYS.BuscarCaja",(id,out_cursor,))
         result = out_cursor.getvalue()
         cajas = []
-        print(result)
 
         for row in result:
             caja = {
@@ -58,8 +54,6 @@ def getCajaById(id):
             "numero_caja" : row[1]
             }
             cajas.append(caja)
-
-        #cursor.close()
 
         return jsonify({'mensaje': 'Caja recuperada por ID', 'cajas': cajas}), 200
     except Exception as ex:
@@ -83,8 +77,6 @@ def updateCaja():
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
         cursor.callproc("SYS.ActualizarCaja",(id, numero_caja))
         cursor.execute("COMMIT")
-        
-        #cursor.close()
 
         return jsonify({'mensaje': 'Caja actualizada por ID'}), 200
     except Exception as ex:
@@ -106,8 +98,6 @@ def insertCaja():
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
         cursor.callproc("SYS.InsertarCaja", (numero_caja,))
         cursor.execute("COMMIT")
-        
-        #cursor.close()
 
         return jsonify({'mensaje': 'Caja insertada'}), 200
     except ValueError:
@@ -126,8 +116,6 @@ def deleteCaja(id):
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
         cursor.callproc("SYS.BorrarCaja", (id,))
         cursor.execute("COMMIT")
-        
-        #cursor.close()
 
         return jsonify({'mensaje': 'Caja eliminada'}), 200
     except Exception as ex:

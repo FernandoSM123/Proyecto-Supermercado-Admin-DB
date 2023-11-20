@@ -6,6 +6,7 @@ from producto import producto
 from caja import caja
 from pfresco import pfresco
 from factura import factura
+from auditoria import auditoria
 
 app = Flask(__name__)
 CORS(app)
@@ -16,6 +17,7 @@ app.register_blueprint(producto,url_prefix="/producto")
 app.register_blueprint(caja,url_prefix="/caja")
 app.register_blueprint(pfresco,url_prefix="/pfresco")
 app.register_blueprint(factura,url_prefix="/factura")
+app.register_blueprint(auditoria,url_prefix="/auditoria")
 
 # test route
 @app.route("/")

@@ -204,6 +204,10 @@ GRANT EXECUTE, DEBUG ON SYS.precioProducto TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getProductosPorCodigo TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.getProductosPorDescripcion TO personal_sistemas;
 
+GRANT SELECT ON DBA_AUDIT_TRAIL TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getAllAuditInfo TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON SYS.getAuditInfoByUser TO personal_sistemas;
+
 -- PERMISOS CAJEROS
 
 GRANT connect TO cajero;

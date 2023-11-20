@@ -76,7 +76,7 @@ IS
 BEGIN
   -- Realiza la consulta de toda la información de auditoría
   OPEN cursor_out FOR
-  SELECT username, userhost, timestamp, action_name, SQL_TEXT
+  SELECT username, timestamp, action_name, SQL_TEXT
   FROM DBA_AUDIT_TRAIL;
 EXCEPTION
   WHEN NO_DATA_FOUND THEN
@@ -101,7 +101,7 @@ BEGIN
 
     -- Realizar la consulta en la tabla DBA_AUDIT_TRAIL
     OPEN cursor_out FOR
-    SELECT username, userhost, timestamp, action_name, SQL_TEXT
+    SELECT username, timestamp, action_name, SQL_TEXT
     FROM DBA_AUDIT_TRAIL
     WHERE username = v_username;
 EXCEPTION
@@ -117,6 +117,7 @@ END getAuditInfoByUser;
 
 -------------------------------------------------------------------------------------------------
 ---------------------------------- DATOS PARA PRUEBAS -------------------------------------------
+
 
 -- Ejemplo de uso
 VAR mi_cursor REFCURSOR;
