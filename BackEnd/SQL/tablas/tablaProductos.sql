@@ -125,6 +125,39 @@ BEGIN
 END getProductosPorDescripcion;
 /
 
+--#10 actualizar cantidad y descripcion por area
+CREATE OR REPLACE PROCEDURE update_descripcion_cantidad(
+    p_producto_id IN NUMBER,
+    p_cantidad IN NUMBER,
+    p_descripcion IN VARCHAR2,
+    p_area IN VARCHAR2,
+    p_usuario IN VARCHAR2
+)
+IS
+BEGIN
+    IF p_area = 'abarrotes' AND p_usuario = 'karen' THEN
+        UPDATE Productos
+        SET cantidad = p_cantidad,
+        descripcion = p_descripcion
+        WHERE producto_id = p_producto_id;
+    ELSIF p_area = 'cuidado personal' AND p_usuario = 'tatiana' THEN
+        UPDATE Productos
+        SET cantidad = p_cantidad,
+        descripcion = p_descripcion
+        WHERE producto_id = p_producto_id;
+     ELSIF p_area = 'mercancías' AND p_usuario = 'michael' THEN
+        UPDATE Productos
+        SET cantidad = p_cantidad,
+        descripcion = p_descripcion
+        WHERE producto_id = p_producto_id;
+    ELSE
+        NULL;
+    END IF;
+    
+    COMMIT;
+END update_descripcion_cantidad;
+/
+
 /*
 ----------- DATOS PARA PRUEBAS ------------
 */

@@ -22,8 +22,8 @@ def getAllProductos():
         cursor.callproc("SYS.getAllProductos", (out_cursor,))
         result = out_cursor.getvalue()
 
-        current_user = GLOBAL_VARS["DB_CONNECTION"].username
-        categoria = gerenteCategoria.get(current_user, "otro")
+        # current_user = GLOBAL_VARS["DB_CONNECTION"].username
+        # categoria = gerenteCategoria.get(current_user, "otro")
         productos = []
 
         for row in result:
@@ -32,7 +32,8 @@ def getAllProductos():
                 "EAN": row[1],
                 "descripcion": row[2],
                 "precio": row[3],
-                "cantidad": row[4]
+                "cantidad": row[4],
+                "area:": row[5]
             }
             productos.append(producto)
 
@@ -65,7 +66,8 @@ def getProductoById(id):
                 "EAN": row[1],
                 "descripcion": row[2],
                 "precio": row[3],
-                "cantidad": row[4]
+                "cantidad": row[4],
+                "area:": row[5]
             }
             productos.append(producto)
 
@@ -85,11 +87,12 @@ def insertPfresco():
     descripcion = data.get('descripcion')
     precio = data.get('precio')
     cantidad = data.get('cantidad')
+    area = data.get("area")
 
     try:
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
         cursor.callproc("SYS.insertProducto",
-                        (ean, descripcion, precio, cantidad))
+                        (ean, descripcion, precio, cantidad,area))
         cursor.execute("COMMIT")
 
         return jsonify({'mensaje': 'Producto insertado correctamente'}), 200
@@ -107,16 +110,46 @@ def update():
     descripcion = data.get('descripcion')
     precio = data.get('precio')
     cantidad = data.get('cantidad')
+    area = data.get("area")
 
     try:
         cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
         cursor.callproc("SYS.updateProducto", (producto_id,
-                        ean, descripcion, precio, cantidad))
+                        ean, descripcion, precio, cantidad,area))
         cursor.execute("COMMIT")
 
         return jsonify({'mensaje': 'Producto actualizado correctamente'}), 200
     except Exception as ex:
         return jsonify({'mensaje': 'Error al actualizar producto', 'error': str(ex)})
+    
+# UPDATE PRODUCTO POR CANTIDAD Y DESCRIPCION (GERENTE DE AREA)
+# recibe json
+# http://127.0.0.1:5000/producto/updatePorArea
+@producto.route("/updatePorArea", methods=["PUT"])
+def updatePorArea():
+    #ean = data.get('ean')
+    #precio = data.get('precio')
+    data = request.get_json()
+    producto_id = data.get('producto_id')
+    descripcion = data.get('descripcion')
+    cantidad = data.get('cantidad')
+    area = data.get("area")
+    usuario = GLOBAL_VARS["DB_CONNECTION"].username
+    print("area:",area)
+    print("usuario:",usuario)
+
+    try:
+        cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+        cursor.callproc("SYS.update_descripcion_cantidad", (producto_id,
+                                                            cantidad,
+                                                            descripcion,
+                                                            area,
+                                                            usuario))
+        cursor.execute("COMMIT")
+
+        return jsonify({'mensaje': 'Producto actualizado (descripcion y cantidad) correctamente'}), 200
+    except Exception as ex:
+        return jsonify({'mensaje': 'Error al actualizar producto (descripcion y cantidad)', 'error': str(ex)})
 
 
 # DELETE PRODUCTO
@@ -181,7 +214,8 @@ def getProductoPorCodigo(ean):
                 "EAN": row[1],
                 "descripcion": row[2],
                 "precio": row[3],
-                "cantidad": row[4]
+                "cantidad": row[4],
+                "area:": row[5]
             }
             productos.append(producto)
 
@@ -211,7 +245,8 @@ def getProductoPorDescripcion(descripcion):
                 "EAN": row[1],
                 "descripcion": row[2],
                 "precio": row[3],
-                "cantidad": row[4]
+                "cantidad": row[4],
+                "area:": row[5]
             }
             productos.append(producto)
 
@@ -220,6 +255,8 @@ def getProductoPorDescripcion(descripcion):
         return jsonify({'mensaje': 'Productos recuperados por descripcion', 'productos': productos}), 200
     except Exception as ex:
         return jsonify({'mensaje': 'Error al recuperar productos por descripcion', 'error': str(ex)})
+    
+
 
 
 #GERENTE DE CADA CATEGORIA DE PRODUCTOS

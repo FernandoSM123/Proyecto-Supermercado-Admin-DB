@@ -248,6 +248,7 @@ GRANT SELECT ON SYS.Productos TO gerente_area;
 GRANT EXECUTE ON sys.getProductosPorCodigo TO gerente_area;
 GRANT EXECUTE ON sys.getProductosPorDescripcion TO gerente_area;
 GRANT EXECUTE ON sys.precioProducto TO gerente_area;
+GRANT EXECUTE ON sys.update_descripcion_cantidad TO gerente_area;
 -- FALTA EL ACTUALIZAR CANTIDAD Y DESCRIPCION
 -- Se debe crear una columna nueva "tipoProducto" en la tabla productos, que diga si un producto es 
 -- abarrote, cuidado personal o mercancía. Este cambio afecta el insert y el update, por lo que hay que 
