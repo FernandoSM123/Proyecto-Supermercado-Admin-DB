@@ -21,6 +21,9 @@ def getAllProductos():
 
         cursor.callproc("SYS.getAllProductos", (out_cursor,))
         result = out_cursor.getvalue()
+
+        current_user = GLOBAL_VARS["DB_CONNECTION"].username
+        categoria = gerenteCategoria.get(current_user, "otro")
         productos = []
 
         for row in result:
@@ -32,6 +35,10 @@ def getAllProductos():
                 "cantidad": row[4]
             }
             productos.append(producto)
+
+        #filtrar productos por categoria
+        # if(categoria != "otro"):
+        #     productos = [producto for producto in productos if producto['categoria'] == categoria]
 
         # cursor.close()
 
@@ -213,3 +220,14 @@ def getProductoPorDescripcion(descripcion):
         return jsonify({'mensaje': 'Productos recuperados por descripcion', 'productos': productos}), 200
     except Exception as ex:
         return jsonify({'mensaje': 'Error al recuperar productos por descripcion', 'error': str(ex)})
+
+
+#GERENTE DE CADA CATEGORIA DE PRODUCTOS
+gerenteCategoria = {
+    "karen": "abarrotes",
+    "tatiana": "cuidado personal",
+    "michael": "mercancia",
+    "dylan": "frescos"
+}
+
+

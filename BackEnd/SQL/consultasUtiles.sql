@@ -21,7 +21,10 @@ delete from DetalleFacturaProducto;
 delete from DetalleFacturaPFresco;
 
 --DELETE TABLAS
-DROP TABLE DetalleFactura;
+DROP TABLE DetalleFacturaProducto;
+DROP TABLE DetalleFacturaPFresco;
+DROP TABLE factura;
+DROP TABLE productos;
 
 --DROP USERS
 DROP USER alberto CASCADE;
