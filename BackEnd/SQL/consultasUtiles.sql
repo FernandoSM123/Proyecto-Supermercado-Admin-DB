@@ -25,10 +25,16 @@ DROP TABLE DetalleFacturaProducto;
 DROP TABLE DetalleFacturaPFresco;
 DROP TABLE factura;
 DROP TABLE productos;
+DROP TABLE pfresco;
 
 --DROP USERS
 DROP USER alberto CASCADE;
 
 --DROP SEQUENCES
-DROP SEQUENCE detalleFacturaProducto_seq;
+DROP SEQUENCE producto_id_sequence;
+DROP SEQUENCE pfresco_id_sequence;
+
 DROP SEQUENCE factura_id_sequence;
+
+DROP SEQUENCE detalleFacturaProducto_seq;
+DROP SEQUENCE detalleFacturaPFresco_seq;
