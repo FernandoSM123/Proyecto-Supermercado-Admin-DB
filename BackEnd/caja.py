@@ -32,7 +32,7 @@ def getAllCajas():
 
         return jsonify({'mensaje': 'Todas las cajas recuperadas', 'cajas': cajas}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar todas las cajas', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar todas las cajas', 'error': str(ex)}), 404
 
 # GET CAJA BY ID
 # La ruta para este metodo es /caja/getById/id 
@@ -57,7 +57,7 @@ def getCajaById(id):
 
         return jsonify({'mensaje': 'Caja recuperada por ID', 'cajas': cajas}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar la caja por ID', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar la caja por ID', 'error': str(ex)}), 404
     
 
 # UPDATE CAJA BY ID
@@ -80,7 +80,7 @@ def updateCaja():
 
         return jsonify({'mensaje': 'Caja actualizada por ID'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al actulizar la caja por ID', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al actulizar la caja por ID', 'error': str(ex)}), 404
 
 # INSERT CAJA 
 # La ruta para este metodo es /caja/insert 
@@ -101,9 +101,9 @@ def insertCaja():
 
         return jsonify({'mensaje': 'Caja insertada'}), 200
     except ValueError:
-        return jsonify({'mensaje': 'Error al insertar la caja', 'error': 'El valor de numero_de_caja no es un número entero válido.'})
+        return jsonify({'mensaje': 'Error al insertar la caja', 'error': 'El valor de numero_de_caja no es un número entero válido.'}), 404
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al insertar la caja', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al insertar la caja', 'error': str(ex)}), 404
 
 # DELETE CAJA BY ID 
 # La ruta para este metodo es /caja/delete 
@@ -119,5 +119,5 @@ def deleteCaja(id):
 
         return jsonify({'mensaje': 'Caja eliminada'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al eliminar la caja', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al eliminar la caja', 'error': str(ex)}), 404
 

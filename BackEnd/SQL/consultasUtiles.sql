@@ -25,6 +25,7 @@ DROP TABLE DetalleFacturaProducto;
 DROP TABLE DetalleFacturaPFresco;
 DROP TABLE factura;
 DROP TABLE productos;
+DROP TABLE pfresco;
 
 --DROP USERS
 DROP USER alberto CASCADE;

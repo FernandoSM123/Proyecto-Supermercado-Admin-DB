@@ -35,7 +35,7 @@ def getAllAuditorias():
 
         return jsonify({'mensaje': 'Todas las auditorias recuperados', 'auditorias': auditorias}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar todos los auditorias', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar todos los auditorias', 'error': str(ex)}), 404
     
 # GET AUDITORIA BY USER NAME
 # La ruta para este metodo es /auditoria/getByUserName/username 
@@ -62,4 +62,4 @@ def getPfrescoById(username):
 
         return jsonify({'mensaje': 'Auditorias recuperadas por nombre de usuario', 'auditorias': auditorias}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar las auditorias por nombre de usuario', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar las auditorias por nombre de usuario', 'error': str(ex)}), 404

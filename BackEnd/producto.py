@@ -45,7 +45,7 @@ def getAllProductos():
 
         return jsonify({'mensaje': 'Todos los productos recuperados', 'productos': productos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar todos los productos', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar todos los productos', 'error': str(ex)}), 404
 
 
 # GET PRODUCTOS BY ID
@@ -75,7 +75,7 @@ def getProductoById(id):
 
         return jsonify({'mensaje': 'Producto recuperado por ID', 'productos': productos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar producto por ID', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar producto por ID', 'error': str(ex)}), 404
 
 # INSERT PRODUCTO
 # recibe json como parametro
@@ -97,7 +97,7 @@ def insertPfresco():
 
         return jsonify({'mensaje': 'Producto insertado correctamente'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al insertar producto', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al insertar producto', 'error': str(ex)}), 404
 
 # UPDATE PRODUCTO
 # recibe json
@@ -120,7 +120,7 @@ def update():
 
         return jsonify({'mensaje': 'Producto actualizado correctamente'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al actualizar producto', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al actualizar producto', 'error': str(ex)}), 404
     
 # UPDATE PRODUCTO POR CANTIDAD Y DESCRIPCION (GERENTE DE AREA)
 # recibe json
@@ -149,7 +149,7 @@ def updatePorArea():
 
         return jsonify({'mensaje': 'Producto actualizado (descripcion y cantidad) correctamente'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al actualizar producto (descripcion y cantidad)', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al actualizar producto (descripcion y cantidad)', 'error': str(ex)}), 404
 
 
 # DELETE PRODUCTO
@@ -165,7 +165,7 @@ def delete(id):
 
         return jsonify({'mensaje': 'Producto eliminado correctamente'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al eliminar el producto', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al eliminar el producto', 'error': str(ex)}), 404
     
 
 # GET PRECIO PRODUCTO
@@ -192,7 +192,7 @@ def getPrecioProducto(ean):
 
         return jsonify({'mensaje': 'Precio del producto recuperado', 'producto': productos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar precio del producto', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar precio del producto', 'error': str(ex)}), 404
     
 
 # GET PRODUCTO POR EAN
@@ -223,7 +223,7 @@ def getProductoPorCodigo(ean):
 
         return jsonify({'mensaje': 'Producto recuperado por codigo', 'producto': productos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar producto por codigo', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar producto por codigo', 'error': str(ex)}), 404
 
 
 # GET PRODUCTO POR DESCRIPCION
@@ -254,7 +254,7 @@ def getProductoPorDescripcion(descripcion):
 
         return jsonify({'mensaje': 'Productos recuperados por descripcion', 'productos': productos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar productos por descripcion', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar productos por descripcion', 'error': str(ex)}), 404
     
 
 
