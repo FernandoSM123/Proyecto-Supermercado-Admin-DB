@@ -249,12 +249,6 @@ GRANT EXECUTE ON sys.getProductosPorCodigo TO gerente_area;
 GRANT EXECUTE ON sys.getProductosPorDescripcion TO gerente_area;
 GRANT EXECUTE ON sys.precioProducto TO gerente_area;
 GRANT EXECUTE ON sys.update_descripcion_cantidad TO gerente_area;
--- FALTA EL ACTUALIZAR CANTIDAD Y DESCRIPCION
--- Se debe crear una columna nueva "tipoProducto" en la tabla productos, que diga si un producto es 
--- abarrote, cuidado personal o mercancía. Este cambio afecta el insert y el update, por lo que hay que 
--- actulizar dichos procedimientos. 
--- Luego se tiene que crear 3 procedimientos que solo actualice la descripción y la cantidad, 
--- para cada tipo de producto. Esto se le tiene que asignar a cada gerente de area según su departamento.    
 
 GRANT SELECT ON SYS.pfresco TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorPLU TO gerente_area;

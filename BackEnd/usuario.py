@@ -95,7 +95,7 @@ def login():
 
         return jsonify({'mensaje': 'Conexion con la DB exitosa', 'usuario': user_data, 'token': token}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al conectar con la DB', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al conectar con la DB', 'error': str(ex)}), 404
 
 
 #LOGOUT
@@ -107,7 +107,7 @@ def logout():
 
         return jsonify({'mensaje': 'Logout exitoso'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al hacer logout', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al hacer logout', 'error': str(ex)}), 404
 
 
 @usuario.get("/home")

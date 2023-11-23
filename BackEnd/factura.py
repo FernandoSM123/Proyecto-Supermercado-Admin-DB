@@ -51,7 +51,7 @@ def getAllFacturas():
         return jsonify({'mensaje': 'Todas las facturas recuperadas', 
                         'facturas': facturas}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar todas las facturas', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar todas las facturas', 'error': str(ex)}), 404
 
 # GET FACTURA BY ID
 # La ruta para este metodo es /factura/getById/id 
@@ -91,7 +91,7 @@ def getFacturaById(id):
 
         return jsonify({'mensaje': 'Factura recuperada por ID', 'Factura': facturas}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar la factura por ID', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar la factura por ID', 'error': str(ex)}), 404
 
 # UPDATE FACTURA BY ID
 # La ruta de este metodo es /factura/update 
@@ -116,7 +116,7 @@ def updateFactura():
         
         return jsonify({'mensaje': 'Factura actualizada por Id'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al actualizar la factura fresco por Id', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al actualizar la factura fresco por Id', 'error': str(ex)}), 404
     
 # INSERT FACTURA
 # La ruta para este metodo es /factura/insert 
@@ -147,9 +147,9 @@ def insertFactura():
         
         return jsonify({'mensaje': 'Factura insertada'}), 200
     except ValueError:
-        return jsonify({'mensaje': 'Error al insertar la factura', 'error': 'Uno de los valores no es válido.'})
+        return jsonify({'mensaje': 'Error al insertar la factura', 'error': 'Uno de los valores no es válido.'}), 404
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al insertar la factura', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al insertar la factura', 'error': str(ex)}), 404
 
 # DELETE FACTURA BY ID 
 # La ruta para este metodo es /factura/delete 

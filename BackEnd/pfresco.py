@@ -37,7 +37,7 @@ def getAllPfrescos():
 
         return jsonify({'mensaje': 'Todas los pfrescos recuperados', 'pfrescos': pfrescos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar todos los pfrescos', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar todos los pfrescos', 'error': str(ex)}), 404
 
 # GET PFRESCO BY ID
 # La ruta para este metodo es /pfresco/getById/id 
@@ -67,7 +67,7 @@ def getPfrescoById(id):
 
         return jsonify({'mensaje': 'Producto fresco recuperado por ID', 'Pfresco': pfrescos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar le Producto fresco por ID', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar le Producto fresco por ID', 'error': str(ex)}), 404
 
 # UPDATE PFRESCO BY ID
 # La ruta de este metodo es /pfresco/update 
@@ -90,7 +90,7 @@ def updatePfresco():
         
         return jsonify({'mensaje': 'Producto fresco actualizado por Id'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al actualizar el producto fresco por Id', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al actualizar el producto fresco por Id', 'error': str(ex)}), 404
 
 # INSERT PFRESCO
 # La ruta para este metodo es /pfresco/insert 
@@ -112,9 +112,9 @@ def insertPfresco():
         
         return jsonify({'mensaje': 'Producto fresco insertado'}), 200
     except ValueError:
-        return jsonify({'mensaje': 'Error al insertar el producto fresco', 'error': 'Uno de los valores no es válido.'})
+        return jsonify({'mensaje': 'Error al insertar el producto fresco', 'error': 'Uno de los valores no es válido.'}), 404
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al insertar el producto fresco', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al insertar el producto fresco', 'error': str(ex)}), 404
 
 # DELETE pfresco BY ID 
 # La ruta para este metodo es /pfresco/delete/id 
@@ -130,7 +130,7 @@ def deletePfresco(id):
         
         return jsonify({'mensaje': 'Producto fresco eliminado'}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al eliminar el producto fresco', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al eliminar el producto fresco', 'error': str(ex)}), 404
 
 # GET PRECIO Y DESCRIPCION PFRESCO POR CODIGO 
 # recibe PLu del producto fresco a consultar
@@ -154,7 +154,7 @@ def getPrecioPfresco(plu):
 
         return jsonify({'mensaje': 'Precio del producto fresco recuperado', 'producto fresco': pfrescos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar precio del producto', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar precio del producto', 'error': str(ex)}), 404
     
 
 # GET PRODUCTO FRESCO POR PLU
@@ -182,7 +182,7 @@ def getPfrescoPorCodigo(plu):
 
         return jsonify({'mensaje': 'Producto fresco recuperado por codigo', 'producto fresco': pfrescos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar producto por codigo', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar producto por codigo', 'error': str(ex)}), 404
 
 # GET PFRESCO POR DESCRIPCION
 # recibe descripcion del producto fresco a consultar
@@ -209,4 +209,4 @@ def getPfrescoPorDescripcion(descripcion):
 
         return jsonify({'mensaje': 'Productos fresco recuperados por descripcion', 'productos frescos': pfrescos}), 200
     except Exception as ex:
-        return jsonify({'mensaje': 'Error al recuperar productos frescos por descripcion', 'error': str(ex)})
+        return jsonify({'mensaje': 'Error al recuperar productos frescos por descripcion', 'error': str(ex)}), 404
