@@ -101,6 +101,7 @@ BEGIN
     UPDATE factura
     SET monto_total = monto_total + new_monto
     WHERE factura_Id = in_facturaID;
+    COMMIT;
 END CalcularMontoFacturaProducto;
 /
 
@@ -118,5 +119,8 @@ END;
 
 --GET DETALLES FACTURA POR ID FACTURA
 VAR mi_cursor REFCURSOR;
-EXEC get_DetalleFacturaProducto(17,:mi_cursor);
+EXEC get_DetalleFacturaProducto(1,:mi_cursor);
 PRINT mi_cursor;
+
+--CALCULAR MONTO FACTURA PRODUCTO
+EXEC CalcularMontoFacturaProducto(3);

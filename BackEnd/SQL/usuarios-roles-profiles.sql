@@ -233,10 +233,12 @@ GRANT EXECUTE, DEBUG ON SYS.insertFactura TO cajero;
 GRANT SELECT,INSERT ON DetalleFacturaProducto TO cajero;
 GRANT EXECUTE, DEBUG ON insert_DetalleFacturaProducto TO cajero;
 GRANT EXECUTE, DEBUG ON insert_DetalleFacturaPFresco TO cajero;
+GRANT EXECUTE, DEBUG ON CalcularMontoFacturaPFresco TO cajero;
 
 GRANT SELECT, INSERT ON DetalleFacturaPFresco TO cajero;
 GRANT EXECUTE, DEBUG ON insert_DetalleFacturaPFresco TO cajero;
 GRANT EXECUTE, DEBUG ON get_DetalleFacturaPFresco TO cajero;
+GRANT EXECUTE, DEBUG ON CalcularMontoFacturaProducto TO cajero;
 
 -- PERMISOS GERENTE DE AREA
 

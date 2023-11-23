@@ -90,6 +90,7 @@ BEGIN
     UPDATE factura
     SET monto_total = monto_total + new_monto
     WHERE factura_Id = in_facturaID;
+    COMMIT;
 END CalcularMontoFacturaPFresco;
 /
 
@@ -108,3 +109,6 @@ END;
 VAR mi_cursor REFCURSOR;
 EXEC get_DetalleFacturaPFresco(17,:mi_cursor);
 PRINT mi_cursor;
+
+--CALCULAR MONTO FACTURA PRODUCTO FRESCO
+EXEC CalcularMontoFacturaPFresco(3);

@@ -213,11 +213,11 @@ END getPfrescoPorDescripcion;
 
 --Llamamos al procedimiento para insertar 4 productos frescos con diferentes datos
 BEGIN
-  InsertPfresco(1, 'Piña Hawaiana', 500, 1000.00);  -- Inserta un producto fresco
-  InsertPfresco(2, 'Manzana Roja', 300, 1500.00);    -- Inserta otro producto fresco
-  InsertPfresco(3, 'Fresa Fresca', 250, 2000.00);    -- Inserta otro producto fresco
-  InsertPfresco(4, 'Platano Maduro', 400, 500.00);   -- Inserta otro producto fresco
-  InsertPfresco(5, 'Uva Dulce', 600, 3000.00);       -- Inserta otro producto fresco
+  InsertPfresco(1223, 'Piña Hawaiana', 500, 1000.00);  -- Inserta un producto fresco
+  InsertPfresco(2123, 'Manzana Roja', 300, 1500.00);    -- Inserta otro producto fresco
+  InsertPfresco(3123, 'Fresa Fresca', 250, 2000.00);    -- Inserta otro producto fresco
+  InsertPfresco(4123, 'Platano Maduro', 400, 500.00);   -- Inserta otro producto fresco
+  InsertPfresco(5123, 'Uva Dulce', 600, 3000.00);       -- Inserta otro producto fresco
 END;
 /
 
