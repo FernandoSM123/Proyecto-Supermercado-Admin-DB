@@ -223,9 +223,13 @@ GRANT EXECUTE, DEBUG ON SYS.BuscarCaja TO cajero;
 
 GRANT SELECT ON SYS.pfresco TO cajero;
 GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO cajero;
+GRANT EXECUTE, DEBUG ON SYS.getAllPfrescos TO cajero;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoById TO cajero;
 
 GRANT SELECT ON SYS.Productos TO cajero;
 GRANT EXECUTE ON sys.precioProducto TO cajero;
+GRANT EXECUTE, DEBUG ON SYS.getAllProductos TO cajero;
+GRANT EXECUTE, DEBUG ON SYS.getProductoByID TO cajero;
 
 GRANT INSERT ON SYS.factura TO cajero;
 GRANT EXECUTE, DEBUG ON SYS.insertFactura TO cajero;
@@ -253,12 +257,16 @@ GRANT EXECUTE ON sys.getProductosPorCodigo TO gerente_area;
 GRANT EXECUTE ON sys.getProductosPorDescripcion TO gerente_area;
 GRANT EXECUTE ON sys.precioProducto TO gerente_area;
 GRANT EXECUTE ON sys.update_descripcion_cantidad TO gerente_area;
+GRANT EXECUTE, DEBUG ON SYS.getAllProductos TO gerente_area;
+GRANT EXECUTE, DEBUG ON SYS.getProductoByID TO gerente_area;
 
 GRANT SELECT ON SYS.pfresco TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorPLU TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorDescripcion TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.updateDescripcionCantidadPfresco TO gerente_area;
+GRANT EXECUTE, DEBUG ON SYS.getAllPfrescos TO TO gerente_area;
+GRANT EXECUTE, DEBUG ON SYS.getPfrescoById TO TO gerente_area;
 
 
 -- PERMISOS GERENTE GENERAL

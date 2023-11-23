@@ -13,7 +13,7 @@ select * from factura;
 select * from caja;
 select * from DetalleFacturaProducto;
 select * from DetalleFacturaPFresco;
-SELECT username, timestamp, action_name, SQL_TEXT FROM DBA_AUDIT_TRAIL;
+SELECT username, timestamp, obj_name,action_name, SQL_TEXT FROM DBA_AUDIT_TRAIL;
 SELECT * from DBA_AUDIT_TRAIL;
 
 --DELETE DATOS TABLAS
