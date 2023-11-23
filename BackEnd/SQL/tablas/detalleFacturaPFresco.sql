@@ -69,6 +69,30 @@ BEGIN
 END get_DetalleFacturaPFresco;
 /
 
+--#4 CALCULAR MONTO DE FACTURA CON BASE A PRODUCTOS FRESCOS
+CREATE OR REPLACE PROCEDURE CalcularMontoFacturaPFresco(
+    in_facturaID IN NUMBER
+)
+AS
+    new_monto NUMBER := 0;
+BEGIN
+    SELECT SUM(p.precio * dfpf.peso)
+    INTO new_monto
+    FROM DetalleFacturaPFresco dfpf
+    JOIN PFresco p ON dfpf.PFrescoID = p.Pfresco_Id
+    WHERE dfpf.FacturaID = in_facturaID;
+
+    IF new_monto IS NULL THEN
+        new_monto := 0;
+    END IF;
+
+    -- Actualizar el monto total en la tabla 'factura'
+    UPDATE factura
+    SET monto_total = monto_total + new_monto
+    WHERE factura_Id = in_facturaID;
+END CalcularMontoFacturaPFresco;
+/
+
 /*
 ----------- DATOS PARA PRUEBAS ------------
 */

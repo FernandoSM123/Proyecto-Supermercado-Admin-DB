@@ -79,6 +79,32 @@ END get_DetalleFacturaProducto;
 --    WHERE Producto_ID = :new.ProductoID;
 --end tr_actualizarStockProductos;
 --/
+
+--#5 CALCULAR MONTO DE FACTURA CON BASE A PRODUCTOS
+CREATE OR REPLACE PROCEDURE CalcularMontoFacturaProducto(
+    in_facturaID IN NUMBER
+)
+AS
+    new_monto NUMBER := 0;
+BEGIN
+    SELECT SUM(p.precio * dfp.Cantidad)
+    INTO new_monto
+    FROM DetalleFacturaProducto dfp
+    JOIN Productos p ON dfp.ProductoID = p.Producto_ID
+    WHERE dfp.FacturaID = in_facturaID;
+
+    IF new_monto IS NULL THEN
+        new_monto := 0;
+    END IF;
+
+    -- Actualizar el monto total en la tabla 'factura'
+    UPDATE factura
+    SET monto_total = monto_total + new_monto
+    WHERE factura_Id = in_facturaID;
+END CalcularMontoFacturaProducto;
+/
+
+
 /*
 ----------- DATOS PARA PRUEBAS ------------
 */

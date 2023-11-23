@@ -16,6 +16,7 @@ select * from DetalleFacturaPFresco;
 
 --DELETE DATOS TABLAS
 delete from productos;
+delete from pfresco;
 delete from factura;
 delete from DetalleFacturaProducto;
 delete from DetalleFacturaPFresco;

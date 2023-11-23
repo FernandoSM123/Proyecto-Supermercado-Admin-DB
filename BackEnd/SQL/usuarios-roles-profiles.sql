@@ -165,10 +165,12 @@ GRANT EXECUTE ON sys.buscardatosusuario TO personal_sistemas;
 GRANT SELECT, INSERT, UPDATE, DELETE ON DetalleFacturaPFresco TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON insert_DetalleFacturaPFresco TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON get_DetalleFacturaPFresco TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON CalcularMontoFacturaPFresco TO personal_sistemas;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON DetalleFacturaProducto TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON insert_DetalleFacturaProducto TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON get_DetalleFacturaProducto TO personal_sistemas;
+GRANT EXECUTE, DEBUG ON CalcularMontoFacturaProducto TO personal_sistemas;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON SYS.caja TO personal_sistemas;
 GRANT EXECUTE, DEBUG ON SYS.BuscarCajas TO personal_sistemas;

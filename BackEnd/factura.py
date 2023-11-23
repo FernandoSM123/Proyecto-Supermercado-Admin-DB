@@ -30,6 +30,10 @@ def getAllFacturas():
             facturaID = row[0]
             productos = getProductosFactura(facturaID) #obtener productos factura
             productosFrescos = getProductosFrescosFactura(facturaID) #obtener productos frescos factura
+
+            #calcular monto factura
+            cursor.callproc("SYS.CalcularMontoFacturaPFresco",(facturaID))
+            cursor.callproc("SYS.CalcularMontoFacturaProducto",(facturaID))
             
             factura = {
                 "factura_id" : row[0],
@@ -141,9 +145,9 @@ def insertFactura():
         id_factura = cursor.var(cx_Oracle.NUMBER) #id de la factura a insertar
         cursor.callproc("SYS.insertFactura", (num_factura, monto_total, fecha, hora, cajero_id, caja_id,id_factura))
         print("id factura:",int(id_factura.getvalue()))
-        cursor.execute("COMMIT")
         insertProductosFactura(int(id_factura.getvalue()),productos) #guardar productos de la factura
         insertProductosFrescosFactura(int(id_factura.getvalue()),pfrescos) #guardar productos frescos de la factura
+        cursor.execute("COMMIT")
         
         return jsonify({'mensaje': 'Factura insertada'}), 200
     except ValueError:
