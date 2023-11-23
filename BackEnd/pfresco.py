@@ -10,9 +10,9 @@ pfresco = Blueprint("pfresco", __name__)
 def home():
     return "Producto Fresco home"
 
-# GET ALL CAJAS
+# GET ALL PFRESCOS
 # Este método no requiere ningún parametro
-# La ruta para consultar es /caja/getAll
+# La ruta para consultar es /pfresco/getAll
 @pfresco.route("/getAll", methods=["GET"])
 def getAllPfrescos():
     try:
@@ -33,7 +33,33 @@ def getAllPfrescos():
             }
             pfrescos.append(pfresco)
 
-        #cursor.close()
+        return jsonify({'mensaje': 'Todas los pfrescos recuperados', 'pfrescos': pfrescos}), 200
+    except Exception as ex:
+        return jsonify({'mensaje': 'Error al recuperar todos los pfrescos', 'error': str(ex)}), 404
+
+
+# GET ALL PFRESCOS
+# Este método no requiere ningún parametro
+# La ruta para consultar es /pfresco/getAllArea
+@pfresco.route("/getAllArea", methods=["GET"])
+def getAllPfrescosArea():
+    try:
+        cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+        out_cursor = cursor.var(cx_Oracle.CURSOR)
+
+        cursor.callproc("SYS.getAllPfrescos",(out_cursor,))
+        result = out_cursor.getvalue()
+        pfrescos = []
+
+        for row in result:
+            pfresco = {
+            "pFresco_id" : row[0],
+            "pul" : row[1],
+            "descripcion" : row[2],
+            "peso" : row[3],
+            "precio" : row[4]
+            }
+            pfrescos.append(pfresco)
 
         return jsonify({'mensaje': 'Todas los pfrescos recuperados', 'pfrescos': pfrescos}), 200
     except Exception as ex:

@@ -47,6 +47,42 @@ def getAllProductos():
     except Exception as ex:
         return jsonify({'mensaje': 'Error al recuperar todos los productos', 'error': str(ex)}), 404
 
+# GET ALL PRODUCTOS
+# http://127.0.0.1:5000/producto/getAllArea
+@producto.route("/getAllArea", methods=["GET"])
+def getAllProductosArea():
+    try:
+        cursor = GLOBAL_VARS["DB_CONNECTION"].cursor()
+        out_cursor = cursor.var(cx_Oracle.CURSOR)
+
+        cursor.callproc("SYS.getAllProductos", (out_cursor,))
+        result = out_cursor.getvalue()
+
+        # current_user = GLOBAL_VARS["DB_CONNECTION"].username
+        # categoria = gerenteCategoria.get(current_user, "otro")
+        productos = []
+
+        for row in result:
+            producto = {
+                "producto_id": row[0],
+                "EAN": row[1],
+                "descripcion": row[2],
+                "precio": row[3],
+                "cantidad": row[4],
+                "area": row[5]
+            }
+            productos.append(producto)
+
+        #filtrar productos por categoria
+        # if(categoria != "otro"):
+        #     productos = [producto for producto in productos if producto['categoria'] == categoria]
+
+        # cursor.close()
+
+        return jsonify({'mensaje': 'Todos los productos recuperados', 'productos': productos}), 200
+    except Exception as ex:
+        return jsonify({'mensaje': 'Error al recuperar todos los productos', 'error': str(ex)}), 404
+
 
 # GET PRODUCTOS BY ID
 # http://127.0.0.1:5000/producto/getById/id

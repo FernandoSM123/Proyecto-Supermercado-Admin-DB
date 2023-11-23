@@ -128,7 +128,7 @@ BEGIN
   UPDATE pfresco
   SET
     descripcion = nueva_descripcion_in,
-    peso = nuevo_peso_in,
+    peso = nuevo_peso_in
   WHERE Pfresco_Id = Pfresco_Id_in;
 
   COMMIT; -- Confirma la transacción
