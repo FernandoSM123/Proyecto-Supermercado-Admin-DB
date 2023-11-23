@@ -33,7 +33,7 @@ def getAllProductos():
                 "descripcion": row[2],
                 "precio": row[3],
                 "cantidad": row[4],
-                "area:": row[5]
+                "area": row[5]
             }
             productos.append(producto)
 
@@ -67,7 +67,7 @@ def getProductoById(id):
                 "descripcion": row[2],
                 "precio": row[3],
                 "cantidad": row[4],
-                "area:": row[5]
+                "area": row[5]
             }
             productos.append(producto)
 

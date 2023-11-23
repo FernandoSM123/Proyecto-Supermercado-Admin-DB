@@ -15,6 +15,22 @@ CREATE TABLE DetalleFacturaPFresco (
     CONSTRAINT fk_pfresco FOREIGN KEY (PFrescoID) REFERENCES pfresco(Pfresco_Id)
 ) TABLESPACE tables_data;
 
+--ALTER FOREIGN KEYS
+ALTER TABLE DetalleFacturaPFresco
+DROP CONSTRAINT fk_factura2;
+
+ALTER TABLE DetalleFacturaPFresco
+ADD CONSTRAINT fk_factura2 FOREIGN KEY (FacturaID) REFERENCES factura(factura_Id)
+ON DELETE CASCADE;
+
+ALTER TABLE DetalleFacturaPFresco
+DROP CONSTRAINT fk_pfresco;
+
+ALTER TABLE DetalleFacturaPFresco
+ADD CONSTRAINT fk_pfresco FOREIGN KEY (PFrescoID) REFERENCES pfresco(Pfresco_Id)
+ON DELETE CASCADE;
+
+
 --#2 INSERTAR DETALLE FACTURA (PRODUCTO FRESCO)
 CREATE OR REPLACE PROCEDURE insert_DetalleFacturaPFresco (
     in_FacturaID IN NUMBER,

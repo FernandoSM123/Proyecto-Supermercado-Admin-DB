@@ -15,6 +15,22 @@ CREATE TABLE DetalleFacturaProducto (
     CONSTRAINT fk_producto FOREIGN KEY (ProductoID) REFERENCES Productos(Producto_ID)
 ) TABLESPACE tables_data;
 
+
+--ALTER FOREIGN KEYS
+ALTER TABLE DetalleFacturaProducto
+DROP CONSTRAINT fk_factura;
+
+ALTER TABLE DetalleFacturaProducto
+ADD CONSTRAINT fk_factura FOREIGN KEY (FacturaID) REFERENCES factura(factura_Id)
+ON DELETE CASCADE;
+
+ALTER TABLE DetalleFacturaProducto
+DROP CONSTRAINT fk_producto;
+
+ALTER TABLE DetalleFacturaProducto
+ADD CONSTRAINT fk_producto FOREIGN KEY (ProductoID) REFERENCES Productos(Producto_ID)
+ON DELETE CASCADE;
+
 --#2 INSERTAR DETALLE FACTURA (PRODUCTO)
 CREATE OR REPLACE PROCEDURE insert_DetalleFacturaProducto (
     in_FacturaID IN NUMBER,

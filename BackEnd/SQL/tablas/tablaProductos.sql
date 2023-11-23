@@ -198,7 +198,7 @@ PRINT mi_cursor;
 
 --UPDATE PRODUCTO PRUEBA
 BEGIN
-  updateProducto(1808124003091, 'Papel higiénico', 2500.00, 'Abarrotes');
+  updateProducto(1,1808124003091, 'Papel higiénico', 1500.00,99,'Abarrotes');
 END;
 /
 
