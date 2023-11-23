@@ -65,6 +65,7 @@ GRANT SELECT ON DBA_AUDIT_TRAIL TO roberto;
 GRANT SELECT ON CDB_AUDIT_TRAIL TO roberto;
 
 
+
 -------------------------------------------------------------------------------------------------
 ----------------------------- PROCEDIMIENTOS ALMACENADOS ----------------------------------------
 

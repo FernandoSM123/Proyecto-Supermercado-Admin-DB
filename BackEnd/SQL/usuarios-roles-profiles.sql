@@ -256,6 +256,7 @@ GRANT EXECUTE, DEBUG ON SYS.getPfrescoPorDescripcion TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.precioPfresco TO gerente_area;
 GRANT EXECUTE, DEBUG ON SYS.updateDescripcionCantidadPfresco TO gerente_area;
 
+
 -- PERMISOS GERENTE GENERAL
 
 GRANT connect TO gerente_general;
